@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MimiTracker - Period Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <a href="../index.html"" class="back-btn">🌸 Back Home</a>
+        <div class="logo">🌸 Cycle Tracker</div>
+    </header>
+
+    <main class="container">
+        
+        <!-- Cycle Countdown Status Card -->
+        <div class="card status-card">
+            <h3>Cycle Status ✨</h3>
+            <div class="status-display">
+                <div class="cycle-orb">
+                    <span id="countdown-days">--</span>
+                    <span class="sub-label">Days Left</span>
+                </div>
+                <div class="status-details">
+                    <p id="prediction-text">No data logged yet!</p>
+                    <p id="cycle-day-text">Log your last period start date below to begin tracking.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Log Period Form Card -->
+        <div class="card log-card">
+            <h3>Log New Period Cycle 📅</h3>
+            <div class="input-group">
+                <label for="period-start-date">When did your last period start?</label>
+                <input type="date" id="period-start-date">
+            </div>
+            <div class="input-row">
+                <div class="input-group">
+                    <label for="cycle-length">Avg. Cycle Length (days)</label>
+                    <input type="number" id="cycle-length" value="28" min="20" max="45">
+                </div>
+                <div class="input-group">
+                    <label for="period-duration">Avg. Duration (days)</label>
+                    <input type="number" id="period-duration" value="5" min="2" max="10">
+                </div>
+            </div>
+            <button id="save-period-btn" onclick="savePeriodCycle()">Update Tracking Logs ✨</button>
+        </div>
+
+        <!-- Daily Symptom Logger Card -->
+        <div class="card symptoms-card">
+            <h3>Today's Symptoms & Mood Tags 🌸</h3>
+            <div class="symptoms-grid">
+                <button class="symptom-tag" data-symptom="cramps" onclick="toggleSymptom('cramps')">⚡ Cramps</button>
+                <button class="symptom-tag" data-symptom="bloating" onclick="toggleSymptom('bloating')">🎈 Bloating</button>
+                <button class="symptom-tag" data-symptom="headache" onclick="toggleSymptom('headache')">🤕 Headache</button>
+                <button class="symptom-tag" data-symptom="fatigue" onclick="toggleSymptom('fatigue')">🥱 Fatigue</button>
+                <button class="symptom-tag" data-symptom="cravings" onclick="toggleSymptom('cravings')">🍫 Cravings</button>
+                <button class="symptom-tag" data-symptom="moodswings" onclick="toggleSymptom('moodswings')">🌪️ Mood Swings</button>
+            </div>
+            <button id="save-symptoms-btn" onclick="saveTodaySymptoms()">Save Symptoms ✨</button>
+        </div>
+
+        <!-- Historical Logs Timeline -->
+        <div class="card history-card">
+            <h3>Past Cycle Logs</h3>
+            <div id="cycle-history-list" class="history-list">
+                <!-- Data lists injected dynamically via JavaScript -->
+            </div>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

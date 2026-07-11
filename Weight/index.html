@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MimiTracker - Weight</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <a href="../index.html" class="back-btn">🌸 Back Home</a>
+        <div class="logo">⚖️ Weight</div>
+    </header>
+
+    <main class="container">
+        <!-- Target Weight Setting Card -->
+        <div class="card target-card">
+            <h3>🎯 Goals</h3>
+            <div class="target-inputs">
+                <div class="input-field">
+                    <label>Target Weight (kg):</label>
+                    <input type="number" id="target-weight-input" step="0.1" placeholder="e.g. 45.0" onchange="saveTarget()">
+                </div>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="target-reached-checkbox" onchange="saveTarget()">
+                    <label for="target-reached-checkbox" id="goal-label">I reached my target! ✨</label>
+                </div>
+            </div>
+            <div id="celebration-msg" class="hidden">🎉 So proud of you! You hit your goal! 🎉</div>
+        </div>
+
+        <!-- Daily Logging Card -->
+        <div class="card log-card">
+            <div class="date-header">
+                <h3>Log Today's Weight</h3>
+                <input type="date" id="log-date" onchange="loadDailyWeights()">
+            </div>
+
+            <div class="weight-inputs-grid">
+                <!-- Morning Weight -->
+                <div class="weight-box morning">
+                    <h4>🌅 Morning</h4>
+                    <input type="number" id="morning-input" step="0.01" placeholder="00.00">
+                    <button onclick="saveTimeWeight('morning')">Log Morning</button>
+                    <p class="time-display" id="morning-saved">—</p>
+                </div>
+
+                <!-- Afternoon Weight -->
+                <div class="weight-box afternoon">
+                    <h4>☀️ Afternoon</h4>
+                    <input type="number" id="afternoon-input" step="0.01" placeholder="00.00">
+                    <button onclick="saveTimeWeight('afternoon')">Log Afternoon</button>
+                    <p class="time-display" id="afternoon-saved">—</p>
+                </div>
+
+                <!-- Evening Weight -->
+                <div class="weight-box evening">
+                    <h4>🌙 Evening</h4>
+                    <input type="number" id="evening-input" step="0.01" placeholder="00.00">
+                    <button onclick="saveTimeWeight('evening')">Log Evening</button>
+                    <p class="time-display" id="evening-saved">—</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Display -->
+        <div class="card history-card">
+            <h3>Previous Weight Logs</h3>
+            <div id="history-list" class="history-list">
+                <!-- Data populated via JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

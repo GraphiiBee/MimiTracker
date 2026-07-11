@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MimiTracker - Water Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <a href="../index.html"" class="back-btn">🌸 Back Home</a>
+        <div class="logo">💧 Water Intake</div>
+    </header>
+
+    <main class="container">
+        
+        <div class="card progress-card">
+            <h3>Daily Hydration Goal ✨</h3>
+            <div class="water-status-box">
+                <div class="water-bubble">
+                    <span id="water-percentage">0%</span>
+                </div>
+                <div class="text-stats">
+                    <p id="water-current-text"><span class="highlight-blue">0</span> / -- ml</p>
+                    <p id="water-remains-text">-- ml left to go!</p>
+                </div>
+            </div>
+            
+            <div class="progress-bar-container">
+                <div id="progress-bar-fill" class="progress-bar-fill"></div>
+            </div>
+        </div>
+
+        <div class="card goal-settings-card">
+            <h3>Adjust Daily Target 🎯</h3>
+            <div class="custom-add-row">
+                <input type="number" id="custom-goal-input" placeholder="Set Goal (e.g., 2500)" min="500" max="10000">
+                <button id="update-goal-btn" onclick="updateDailyGoal()">Update Target ✨</button>
+            </div>
+        </div>
+
+        <div class="card controls-card">
+            <h3>Log Water Intake</h3>
+            
+            <div class="quick-add-grid">
+                <button class="water-btn" onclick="addWater(250)">
+                    <span class="icon">🥛</span>
+                    <span class="label">+250 ml</span>
+                    <span class="subtext">Standard Glass</span>
+                </button>
+                <button class="water-btn" onclick="addWater(500)">
+                    <span class="icon">🍼</span>
+                    <span class="label">+500 ml</span>
+                    <span class="subtext">Small Bottle</span>
+                </button>
+                <button class="water-btn" onclick="addWater(750)">
+                    <span class="icon">🥤</span>
+                    <span class="label">+750 ml</span>
+                    <span class="subtext">Large Tumbler</span>
+                </button>
+                <button class="water-btn" onclick="addWater(100)">
+                    <span class="icon">💧</span>
+                    <span class="label">+100 ml</span>
+                    <span class="subtext">Quick Sip</span>
+                </button>
+            </div>
+
+            <div class="custom-add-row">
+                <input type="number" id="custom-water-input" placeholder="Custom amount (ml)" min="10" max="5000">
+                <button id="custom-add-btn" onclick="addCustomWater()">Add Sip ✨</button>
+            </div>
+
+            <button class="reset-btn" onclick="resetWater()">Reset Today's Log 🔄</button>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

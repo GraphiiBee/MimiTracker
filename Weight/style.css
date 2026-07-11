@@ -1,0 +1,274 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Quicksand', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: #FAF6F6;
+    color: #4A4A4A;
+    min-height: 100vh;
+    padding-bottom: 3rem;
+}
+
+header {
+    background-color: #FFFFFF;
+    padding: 1.2rem 2rem;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(255, 182, 193, 0.15);
+}
+
+.back-btn {
+    text-decoration: none;
+    color: #FF9AA2;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.logo {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #FF9AA2;
+    transform: translateX(-35px);
+}
+
+.container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.card {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 24px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02);
+}
+
+.card h3 {
+    color: #FF9AA2;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+/* Goals/Target Section Styling */
+.target-inputs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.input-field {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.target-inputs label {
+    font-weight: 600;
+}
+
+input[type="number"], input[type="date"] {
+    padding: 0.6rem 1rem;
+    border: 2px solid #E2E2E2;
+    border-radius: 12px;
+    outline: none;
+    font-size: 1rem;
+    color: #4A4A4A;
+}
+
+input:focus {
+    border-color: #FFB7B2;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    cursor: pointer;
+}
+
+.checkbox-container input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+    accent-color: #FF9AA2;
+    cursor: pointer;
+}
+
+#celebration-msg {
+    margin-top: 1.25rem;
+    background-color: #E8F5E9;
+    color: #2E7D32;
+    padding: 0.8rem;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+/* Daily Log Layout */
+.date-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.weight-inputs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.weight-box {
+    background-color: #FFF9F9;
+    padding: 1.5rem;
+    border-radius: 16px;
+    text-align: center;
+    border: 1px solid #FFEBEB;
+}
+
+.weight-box h4 {
+    margin-bottom: 0.75rem;
+    font-size: 1.05rem;
+}
+
+.weight-box input {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0.8rem;
+}
+
+.weight-box button {
+    background-color: #FFB7B2;
+    color: white;
+    border: none;
+    padding: 0.7rem 1rem;
+    border-radius: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    font-size: 0.95rem;
+    transition: background 0.2s;
+}
+
+.weight-box button:hover {
+    background-color: #FF9AA2;
+}
+
+.time-display {
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+    color: #888;
+}
+
+/* History System */
+.history-list {
+    max-height: 280px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    background-color: #FAFAFA;
+    padding: 0.9rem 1.2rem;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    border-left: 4px solid #FFDAC1;
+}
+
+.history-date {
+    font-weight: 600;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ==========================================================
+   📱 MOBILE & PHONE RESPONSIVE RULES 
+   ========================================================== */
+@media (max-width: 680px) {
+    header {
+        padding: 1rem;
+    }
+
+    .logo {
+        font-size: 1.2rem;
+        transform: translateX(-25px);
+    }
+
+    .container {
+        margin: 1rem auto;
+        padding: 0 1rem;
+        gap: 1rem;
+    }
+
+    .card {
+        padding: 1.25rem;
+        border-radius: 20px;
+    }
+
+    .target-inputs {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .input-field {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .input-field input {
+        width: 120px;
+    }
+
+    .date-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .date-header input {
+        width: 100%;
+    }
+
+    .weight-inputs-grid {
+        grid-template-columns: 1fr; /* Stack morning, afternoon, night on top of each other */
+        gap: 1rem;
+    }
+
+    .weight-box {
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .weight-box input {
+        max-width: 200px;
+    }
+
+    .history-item {
+        flex-direction: column;
+        gap: 0.4rem;
+        padding: 0.8rem;
+    }
+}

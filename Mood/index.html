@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MimiTracker - Mood Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <a href="../index.html"" class="back-btn">🌸 Back Home</a>
+        <div class="logo">🎭 Mood Tracker</div>
+    </header>
+
+    <main class="container">
+        
+        <!-- Log Today's Mood Card -->
+        <div class="card log-card">
+            <h3>How are you today, Mimi? 💕</h3>
+            
+            <!-- Emoji Interaction Grid Selector -->
+            <div class="mood-selector-grid">
+                <button class="mood-btn" data-mood="excited" onclick="selectMood('excited')">
+                    <span class="emoji">💖</span>
+                    <span class="label">Excited</span>
+                </button>
+                <button class="mood-btn" data-mood="happy" onclick="selectMood('happy')">
+                    <span class="emoji">😊</span>
+                    <span class="label">Happy</span>
+                </button>
+                <button class="mood-btn" data-mood="relaxed" onclick="selectMood('relaxed')">
+                    <span class="emoji">🍃</span>
+                    <span class="label">Calm</span>
+                </button>
+                <button class="mood-btn" data-mood="tired" onclick="selectMood('tired')">
+                    <span class="emoji">😴</span>
+                    <span class="label">Tired</span>
+                </button>
+                <button class="mood-btn" data-mood="sad" onclick="selectMood('sad')">
+                    <span class="emoji">🥺</span>
+                    <span class="label">Down</span>
+                </button>
+                <button class="mood-btn" data-mood="stressed" onclick="selectMood('stressed')">
+                    <span class="emoji">😤</span>
+                    <span class="label">Stressed</span>
+                </button>
+            </div>
+
+            <div class="input-group">
+                <label for="mood-note">Add a little note (optional)</label>
+                <textarea id="mood-note" placeholder="What made you feel this way? ✨" rows="2" maxlength="150"></textarea>
+            </div>
+
+            <button id="save-mood-btn" onclick="saveDailyMood()">Save Daily Log ✨</button>
+        </div>
+
+        <!-- Monthly Mood Analytics Card -->
+        <div class="card stats-card">
+            <h3>This Month's Vibe Analytics 📊</h3>
+            <div id="analytics-container" class="analytics-container">
+                <!-- Dynamically populated statistics scales -->
+            </div>
+        </div>
+
+        <!-- History Timeline Container -->
+        <div class="card history-card">
+            <h3>Mood Timeline</h3>
+            <div id="mood-history-timeline" class="history-timeline">
+                <!-- Dynamic historic entries injected here -->
+            </div>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

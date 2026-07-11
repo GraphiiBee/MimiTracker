@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MimiTracker - Sticky Notes</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <a href="../index.html" class="back-btn">🌸 Back Home</a>
+        <div class="logo">📝 Sticky Notes</div>
+    </header>
+
+    <main class="dashboard">
+        <div class="welcome-section">
+            <h1>Sticky Notes 📝</h1>
+            <p>Pin your daily ideas, thoughts, and aesthetic inspirations.</p>
+        </div>
+
+        <div class="note-creator">
+            <h3>Create a New Sticky Note</h3>
+            <input type="text" id="note-title" placeholder="Note Title...">
+            <textarea id="note-content" rows="4" placeholder="Type your thoughts here..."></textarea>
+            
+            <div class="media-upload-row">
+                <label class="custom-file-upload">
+                    <input type="file" id="note-image" accept="image/*">
+                    📸 Add Image
+                </label>
+                <span id="file-name-preview">No image selected</span>
+            </div>
+
+            <div class="color-picker-row">
+                <span>Choose Paper Color:</span>
+                <div class="color-options">
+                    <div class="color-dot selected" data-color="#FFF0F5" style="background-color: #FFF0F5;"></div>
+                    <div class="color-dot" data-color="#FFE4E1" style="background-color: #FFE4E1;"></div>
+                    <div class="color-dot" data-color="#FFE5B4" style="background-color: #FFE5B4;"></div>
+                    <div class="color-dot" data-color="#E0F7FA" style="background-color: #E0F7FA;"></div>
+                    <div class="color-dot" data-color="#E8F8F5" style="background-color: #E8F8F5;"></div>
+                </div>
+            </div>
+
+            <button onclick="createNewNote()" id="pin-btn">📌 Pin Note</button>
+        </div>
+
+        <hr class="section-divider">
+
+        <div id="notes-grid" class="notes-grid">
+            </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

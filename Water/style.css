@@ -1,0 +1,248 @@
+/* Base Style Resets */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Quicksand', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: #FAF6F6;
+    color: #4A4A4A;
+    min-height: 100vh;
+    padding-bottom: 3rem;
+}
+
+header {
+    background-color: #FFFFFF;
+    padding: 1.2rem 2rem;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(255, 182, 193, 0.15);
+}
+
+.back-btn {
+    text-decoration: none;
+    color: #FF9AA2;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.logo {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #81D4FA;
+    transform: translateX(-35px);
+}
+
+.container {
+    max-width: 480px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.card {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 24px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02);
+}
+
+.card h3 {
+    color: #5CB7E6;
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+    text-align: center;
+}
+
+/* Water Status Presentation Layout */
+.water-status-box {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Floating Orb Graphic Graphic Element */
+.water-bubble {
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle at 30% 30%, #E1F5FE, #81D4FA);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 15px rgba(129, 212, 250, 0.3);
+    animation: float 3s ease-in-out infinite;
+}
+
+#water-percentage {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #0288D1;
+}
+
+.text-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+#water-current-text {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #4A4A4A;
+}
+
+.highlight-blue {
+    color: #0288D1;
+}
+
+#water-remains-text {
+    font-size: 0.9rem;
+    color: #777;
+    font-weight: 600;
+}
+
+/* Rounded Inline Bar Fill Graph */
+.progress-bar-container {
+    width: 100%;
+    height: 16px;
+    background-color: #F0F4F8;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #81D4FA, #29B6F6);
+    border-radius: 20px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Intake Log Interaction Button Grids */
+.quick-add-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.water-btn {
+    background-color: #F9FBFD;
+    border: 2px solid #E1F5FE;
+    border-radius: 20px;
+    padding: 1rem;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    transition: all 0.2s ease;
+}
+
+.water-btn:hover {
+    transform: translateY(-2px);
+    background-color: #E1F5FE;
+    border-color: #81D4FA;
+}
+
+.water-btn:active {
+    transform: translateY(0);
+}
+
+.water-btn .icon {
+    font-size: 1.6rem;
+}
+
+.water-btn .label {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #0288D1;
+}
+
+.water-btn .subtext {
+    font-size: 0.75rem;
+    color: #888;
+    font-weight: 600;
+}
+
+/* Custom Metric Input Rows */
+.custom-add-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+input[type="number"] {
+    flex: 1;
+    padding: 0.7rem 1rem;
+    border: 2px solid #E2E2E2;
+    border-radius: 14px;
+    outline: none;
+    font-size: 0.95rem;
+}
+
+input:focus {
+    border-color: #81D4FA;
+}
+
+#custom-add-btn, #update-goal-btn {
+    background-color: #4FC3F7;
+    color: white;
+    border: none;
+    padding: 0 1.25rem;
+    border-radius: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#update-goal-btn {
+    background-color: #AED581; /* Soft green accent for target completion features */
+}
+
+#custom-add-btn:hover { background-color: #29B6F6; }
+#update-goal-btn:hover { background-color: #9CCC65; }
+
+.reset-btn {
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    padding: 0.5rem;
+    margin-top: 1rem;
+    transition: color 0.2s;
+}
+
+.reset-btn:hover {
+    color: #E57373;
+}
+
+/* Animations */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+@media (max-width: 680px) {
+    .container {
+        margin: 1rem auto;
+        padding: 0 1rem;
+    }
+    .card {
+        padding: 1.25rem;
+    }
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MimiTracker - BMI</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <a href="../index.html"" class="back-btn">🌸 Back Home</a>
+        <div class="logo">📊 BMI Checker</div>
+    </header>
+
+    <main class="container">
+        <div class="card bmi-card">
+            <h3>Calculate BMI</h3>
+            <p class="subtitle">Enter details to see health insights instantly ✨</p>
+            
+            <!-- Age Input -->
+            <div class="input-group">
+                <label for="age-input">Age (years)</label>
+                <input type="number" id="age-input" placeholder="e.g. 22" min="1" max="120">
+            </div>
+
+            <!-- Height Input with Instant Conversion Toggle -->
+            <div class="input-group">
+                <div class="label-row">
+                    <label>Height</label>
+                    <div class="toggle-group" id="height-toggle">
+                        <button type="button" class="toggle-btn active" onclick="setHeightUnit('cm')">cm</button>
+                        <button type="button" class="toggle-btn" onclick="setHeightUnit('ft')">ft</button>
+                    </div>
+                </div>
+                <input type="number" id="height-input" placeholder="e.g. 160" step="any">
+            </div>
+
+            <!-- Weight Input with Instant Conversion Toggle -->
+            <div class="input-group">
+                <div class="label-row">
+                    <label>Weight</label>
+                    <div class="toggle-group" id="weight-toggle">
+                        <button type="button" class="toggle-btn active" onclick="setWeightUnit('kg')">kg</button>
+                        <button type="button" class="toggle-btn" onclick="setWeightUnit('lbs')">lbs</button>
+                    </div>
+                </div>
+                <input type="number" id="weight-input" placeholder="e.g. 50.5" step="any">
+            </div>
+
+            <button id="calc-btn" onclick="calculateBMI()">Calculate ✨</button>
+        </div>
+
+        <!-- Dynamic Results Card -->
+        <div id="result-card" class="card result-card hidden">
+            <h3>Your Result</h3>
+            <div class="bmi-score-box">
+                <span id="bmi-number">0.0</span>
+                <p id="bmi-status">Normal</p>
+            </div>
+            <p id="bmi-feedback">You're doing amazing! Keep taking great care of yourself. 💕</p>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

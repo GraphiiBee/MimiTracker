@@ -1,0 +1,242 @@
+/* Cute, Minimalist Palette & Resets */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Quicksand', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: #FAF6F6;
+    color: #4A4A4A;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #FFFFFF;
+    padding: 1.2rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(255, 182, 193, 0.15);
+}
+
+.logo {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #FF9AA2;
+}
+
+button {
+    background-color: #FFB7B2;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    background-color: #FF9AA2;
+    transform: translateY(-1px);
+}
+
+#logout-btn {
+    background-color: #E2E2E2;
+    color: #666;
+    margin-left: 10px;
+}
+
+#logout-btn:hover {
+    background-color: #D4D4D4;
+}
+
+.dashboard {
+    max-width: 1000px;
+    margin: 3rem auto;
+    padding: 0 2rem;
+    width: 100%;
+}
+
+.welcome-section {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.welcome-section h1 {
+    font-size: 2.5rem;
+    color: #FF9AA2;
+    margin-bottom: 0.5rem;
+}
+
+.welcome-section p {
+    color: #888888;
+    font-size: 1.1rem;
+}
+
+/* Previews Modular Layout System */
+.previews-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.preview-card {
+    background: #FFFFFF;
+    border-radius: 24px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02);
+    border-left: 5px solid #FFB7B2;
+    text-align: left;
+}
+
+.preview-card h4 {
+    font-size: 1.1rem;
+    color: #FF9AA2;
+    margin-bottom: 0.6rem;
+    font-weight: 700;
+}
+
+.preview-card p {
+    font-size: 0.95rem;
+    color: #666;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.preview-highlight {
+    color: #FF6B76;
+    font-weight: 700;
+}
+
+.preview-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.35rem 0;
+    border-bottom: 1px dotted #F3ECEC;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.preview-row:last-child {
+    border-bottom: none;
+}
+
+.preview-row-title {
+    color: #4A4A4A;
+}
+
+.preview-row-date {
+    color: #FF9AA2;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+.grid-card {
+    background: #FFFFFF;
+    border: 2px solid transparent;
+    border-radius: 24px;
+    padding: 2rem;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s ease;
+}
+
+.grid-card:hover {
+    transform: translateY(-5px);
+    border-color: #FFDAC1;
+    box-shadow: 0 12px 24px rgba(255, 182, 193, 0.2);
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.grid-card h3 {
+    font-size: 1.25rem;
+    color: #4A4A4A;
+    margin-bottom: 0.5rem;
+}
+
+.grid-card p {
+    font-size: 0.9rem;
+    color: #9B9B9B;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 2.5rem;
+    border-radius: 24px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #aaa;
+}
+
+.modal input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0 1rem 0;
+    border: 2px solid #E2E2E2;
+    border-radius: 12px;
+    outline: none;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.modal input:focus {
+    border-color: #FFB7B2;
+}
+
+.modal button {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+}
+
+#auth-status-msg {
+    font-size: 0.85rem;
+    color: #888;
+    margin-top: 0.25rem;
+}
+
+.hidden {
+    display: none !important;
+}

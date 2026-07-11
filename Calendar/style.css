@@ -1,0 +1,383 @@
+/* Base Layout Resets & Fonts */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Quicksand', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: #FAF6F6;
+    color: #4A4A4A;
+    min-height: 100vh;
+    padding-bottom: 3rem;
+}
+
+/* Header Component */
+header {
+    background-color: #FFFFFF;
+    padding: 1.2rem 2rem;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(255, 182, 193, 0.15);
+}
+
+.back-btn {
+    text-decoration: none;
+    color: #FF9AA2;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.back-btn:hover {
+    color: #FFB7B2;
+}
+
+.logo {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #FF9AA2;
+    transform: translateX(-35px); /* Offsets back button space to keep text centered */
+}
+
+/* Page Container Setup */
+.container {
+    max-width: 550px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Core Dashboard Cards */
+.card {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 24px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02);
+}
+
+.card h3 {
+    color: #FF9AA2;
+    font-size: 1.3rem;
+    margin-bottom: 1.25rem;
+}
+
+/* Form Layout Elements */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.input-group label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.input-row {
+    display: flex;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+input[type="text"], 
+input[type="number"], 
+input[type="time"], 
+select {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 2px solid #E2E2E2;
+    border-radius: 14px;
+    outline: none;
+    font-size: 0.95rem;
+    color: #4A4A4A;
+    background-color: #FFFFFF;
+    transition: border-color 0.2s;
+}
+
+input:focus, select:focus {
+    border-color: #FFB7B2;
+}
+
+#save-reminder-btn {
+    background-color: #FFB7B2;
+    color: white;
+    border: none;
+    padding: 0.8rem;
+    border-radius: 16px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+#save-reminder-btn:hover {
+    background-color: #FF9AA2;
+}
+
+/* Calendar Interface */
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+
+#month-year-label {
+    font-size: 1.25rem;
+    color: #4A4A4A;
+    font-weight: 700;
+}
+
+.nav-btn {
+    background-color: #FFF0F0;
+    color: #FF9AA2;
+    border: none;
+    padding: 0.5rem 0.8rem;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+
+.nav-btn:hover {
+    background-color: #FFB7B2;
+    color: white;
+}
+
+.weekdays-grid, .days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+}
+
+.weekdays-grid {
+    font-weight: 700;
+    color: #FFB7B2;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.days-grid {
+    gap: 0.5rem 0.25rem;
+}
+
+/* Individual Calendar Grid Blocks */
+.day-cell {
+    position: relative;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    transition: background-color 0.2s;
+}
+
+.day-cell:not(.empty) {
+    cursor: pointer;
+}
+
+.day-cell:hover:not(.empty) {
+    background-color: #FAF6F6;
+}
+
+.day-cell.empty {
+    cursor: default;
+}
+
+.day-cell.today {
+    border: 2px solid #FFB7B2;
+    color: #FF9AA2;
+}
+
+/* Event Dot Indicator Placement */
+.event-dot {
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 5px;
+    height: 5px;
+    background-color: #FF9AA2;
+    border-radius: 50%;
+}
+
+/* Visual Status Indicators Legend */
+.legend {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1.25rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #777;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.event-indicator-dot { background-color: #FF9AA2; }
+.today-indicator-dot { border: 2px solid #FFB7B2; background: white; }
+
+/* Filtered Month Reminders Container Elements */
+.reminders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    max-height: 350px;
+    overflow-y: auto;
+    padding-right: 2px;
+}
+
+.empty-state {
+    text-align: center;
+    color: #A0A0A0;
+    font-size: 0.9rem;
+    padding: 1.5rem 0;
+}
+
+/* Individual Active Dynamic Reminders Row Cards */
+.reminder-item {
+    background-color: #FFF9F9;
+    border: 1px solid #FFEBEB;
+    border-left: 4px solid #FFB7B2;
+    padding: 1rem 2.5rem 1rem 1rem;
+    border-radius: 16px;
+    position: relative;
+    animation: slideIn 0.3s ease-out;
+}
+
+.reminder-top-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.25rem;
+}
+
+.reminder-item .title {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #4A4A4A;
+}
+
+/* Specialty Color Badging Categories */
+.type-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    border-radius: 8px;
+    background-color: #FFE5E5;
+    color: #FF8B8B;
+    letter-spacing: 0.5px;
+}
+
+.meta-text {
+    font-size: 0.82rem;
+    color: #888;
+    font-weight: 600;
+}
+
+/* Countdown Visual Status Block Component */
+.live-countdown {
+    margin-top: 0.6rem;
+    background-color: #FFFFFF;
+    border: 1.5px dashed #FFDAC1;
+    color: #FF9E66;
+    padding: 0.5rem 0.8rem;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-block;
+    letter-spacing: 0.2px;
+}
+
+/* Item Dismiss / Deletion Interface Icon Target */
+.delete-reminder-btn {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #CCAFAF;
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0.2rem;
+    transition: color 0.2s;
+}
+
+.delete-reminder-btn:hover {
+    color: #FF9AA2;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================
+   📱 PHONE PORTABILITY BREAKOUT SYSTEM CONSTRAINTS
+   ========================================================== */
+@media (max-width: 680px) {
+    header {
+        padding: 1rem;
+    }
+
+    .logo {
+        font-size: 1.2rem;
+        transform: translateX(-25px);
+    }
+
+    .container {
+        margin: 1rem auto;
+        padding: 0 1rem;
+        gap: 1rem;
+    }
+
+    .card {
+        padding: 1.25rem;
+        border-radius: 20px;
+    }
+
+    .day-cell {
+        font-size: 0.9rem;
+    }
+    
+    .input-row {
+        gap: 0.5rem;
+    }
+    
+    input[type="text"], 
+    input[type="number"], 
+    input[type="time"], 
+    select {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.9rem;
+    }
+}

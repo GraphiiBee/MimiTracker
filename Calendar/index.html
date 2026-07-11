@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MimiTracker - Calendar & Reminders</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <a href="../index.html"" class="back-btn">🌸 Back Home</a>
+        <div class="logo">📅 Calendar</div>
+    </header>
+
+    <main class="container">
+        
+        <div class="card form-card">
+            <h3>Create New Reminder ✨</h3>
+            
+            <div class="input-group">
+                <label for="reminder-title">Reminder Title</label>
+                <input type="text" id="reminder-title" placeholder="e.g., Mimi's Birthday! 🍰" autocomplete="off">
+            </div>
+
+            <div class="input-group">
+                <label for="reminder-type">Reminder Type</label>
+                <select id="reminder-type" onchange="handleTypeChange()">
+                    <option value="birthday">🎉 Birthday</option>
+                    <option value="event">🎫 Event</option>
+                    <option value="anniversary">💖 Anniversary</option>
+                    <option value="countdown">⏳ Countdown</option>
+                </select>
+            </div>
+
+            <div id="dynamic-fields-container">
+                </div>
+
+            <button id="save-reminder-btn" onclick="saveReminder()">Add to Calendar ✨</button>
+        </div>
+
+        <div class="card calendar-card">
+            <div class="calendar-header">
+                <button class="nav-btn" onclick="changeMonth(-1)">◀</button>
+                <h2 id="month-year-label">Month Year</h2>
+                <button class="nav-btn" onclick="changeMonth(1)">▶</button>
+            </div>
+
+            <div class="weekdays-grid">
+                <div>Su</div>
+                <div>Mo</div>
+                <div>Tu</div>
+                <div>We</div>
+                <div>Th</div>
+                <div>Fr</div>
+                <div>Sa</div>
+            </div>
+
+            <div id="days-grid" class="days-grid">
+                </div>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <span class="dot event-indicator-dot"></span>
+                    <span>Has Reminder</span>
+                </div>
+                <div class="legend-item">
+                    <span class="dot today-indicator-dot"></span>
+                    <span>Today</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card list-card">
+            <h3 id="list-title">Reminders for this Month</h3>
+            <div id="reminders-list" class="reminders-list">
+                </div>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
