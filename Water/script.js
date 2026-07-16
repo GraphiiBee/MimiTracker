@@ -1,3 +1,4 @@
+//Water script.js
 const currentUser = localStorage.getItem("mimiTracker_session") || "guest";
 
 // Dynamically fetch saved user target goal, default back to 2000ml if unconfigured

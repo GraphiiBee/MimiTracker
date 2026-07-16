@@ -1,93 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MimiTracker</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#FFF8F9">
+<title>MimiTracker</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header>
-        <div class="logo">🌸 MimiTracker</div>
-        <div class="auth-container">
-            <button id="auth-btn" onclick="openAuthModal()">Choose Name</button>
-            <span id="user-display" class="hidden"></span>
-            <button id="logout-btn" class="hidden" onclick="logout()">Logout</button>
-        </div>
-    </header>
+<!-- Top bar: brand + login/logout controls -->
+<header>
+    <div class="logo">🌸 MimiTracker</div>
+    <div class="auth-container">
+        <button id="auth-btn" class="btn btn-primary" onclick="openAuthModal()">Choose Name</button>
+        <span id="user-display" class="user-display hidden"></span>
+        <button id="logout-btn" class="btn btn-ghost hidden" onclick="logout()">Logout</button>
+    </div>
+</header>
 
-    <main class="dashboard">
-        <div class="welcome-section">
-            <h1 id="welcome-text">Welcome to MimiTracker ✨</h1>
-            <p>Your simple, cute, all-in-one personal space.</p>
+<main class="dashboard">
+
+    <!-- Greeting, text swapped by checkSession() -->
+    <section class="welcome-section">
+        <h1 id="welcome-text">Welcome to MimiTracker ✨</h1>
+        <p>A simple space to track your days, habits, and little moments.</p>
+    </section>
+
+    <!-- Snapshot cards, only shown once logged in -->
+    <section id="home-previews" class="previews-container hidden">
+
+        <!-- Cycle status, filled by renderPeriodPreview() -->
+        <div class="preview-card">
+            <div class="preview-icon">🌸</div>
+            <h4>Cycle Status</h4>
+            <p id="home-period-content">Loading cycle data...</p>
         </div>
 
-        <!-- Live Content Previews Widget Container -->
-        <div id="home-previews" class="previews-container hidden">
-            <div class="preview-card">
-                <h4>🌸 Cycle Status</h4>
-                <p id="home-period-content">Loading cycle data...</p>
-            </div>
-            <div class="preview-card">
-                <h4>📅 Upcoming Events</h4>
-                <div id="home-reminders-content">Loading reminders...</div>
-            </div>
+        <!-- Upcoming reminders, filled by renderRemindersPreview() -->
+        <div class="preview-card">
+            <div class="preview-icon">📅</div>
+            <h4>Upcoming Events</h4>
+            <div id="home-reminders-content">Loading reminders...</div>
         </div>
 
-        <!-- Navigation Grid System Matrix (Paths updated to match root level) -->
-        <div class="grid-container">
-            <a href="Calendar/index.html" class="grid-card">
-                <div class="card-icon">📅</div>
-                <h3>Calendar & Reminders</h3>
-                <p>Manage events & schedules</p>
-            </a>
-            <a href="Period/index.html" class="grid-card">
-                <div class="card-icon">🌸</div>
-                <h3>Period Tracker</h3>
-                <p>Track cycles & symptoms</p>
-            </a>
-            <a href="Weight/index.html" class="grid-card">
-                <div class="card-icon">⚖️</div>
-                <h3>Weight Tracker</h3>
-                <p>Morning, afternoon & night logs</p>
-            </a>
-            <a href="BMI/index.html" class="grid-card">
-                <div class="card-icon">📊</div>
-                <h3>BMI Checker</h3>
-                <p>Quick health insights</p>
-            </a>
-            <a href="Water/index.html" class="grid-card">
-                <div class="card-icon">💧</div>
-                <h3>Water Tracker</h3>
-                <p>Stay hydrated daily</p>
-            </a>
-            <a href="Notes/index.html" class="grid-card">
-                <div class="card-icon">📝</div>
-                <h3>Sticky Notes</h3>
-                <p>Pin ideas & images</p>
-            </a>
+        <!-- Together Space entry: opens the code modal if not connected, otherwise jumps straight in -->
+        <div class="preview-card together-card" onclick="handleTogetherCardClick()" role="button" tabindex="0" aria-label="Open Together Space">
+            <span id="together-status-badge" class="status-badge">Not Connected</span>
+            <div class="preview-icon">💗</div>
+            <h4>Together Space</h4>
+            <p id="together-space-status">A shared space for memories, goals, and little moments together.</p>
         </div>
-    </main>
 
-    <div id="auth-modal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeAuthModal()">&times;</span>
-            <div id="auth-step-1">
-                <h2>Choose a Username</h2>
-                <input type="text" id="username-input" placeholder="Enter username...">
-                <button onclick="handleUsernameSubmit()">Next</button>
-            </div>
-            <div id="auth-step-2" class="hidden">
-                <h2 id="password-title">Enter Password</h2>
-                <p id="auth-status-msg"></p>
-                <input type="password" id="password-input" placeholder="Enter password...">
-                <button onclick="handlePasswordSubmit()">Submit</button>
-            </div>
+    </section>
+
+    <!-- Main navigation to every module -->
+    <section class="grid-container">
+
+        <a href="Calendar/index.html" class="grid-card">
+            <div class="card-icon">📅</div>
+            <h3>Calendar & Reminders</h3>
+            <p>Keep track of important dates and plans.</p>
+        </a>
+
+        <a href="Period/index.html" class="grid-card">
+            <div class="card-icon">🌸</div>
+            <h3>Period Tracker</h3>
+            <p>Track cycles, symptoms, and patterns.</p>
+        </a>
+
+        <a href="Weight/index.html" class="grid-card">
+            <div class="card-icon">⚖️</div>
+            <h3>Weight Tracker</h3>
+            <p>Log your weight throughout the day.</p>
+        </a>
+
+        <a href="BMI/index.html" class="grid-card">
+            <div class="card-icon">📊</div>
+            <h3>BMI Checker</h3>
+            <p>View quick health insights.</p>
+        </a>
+
+        <a href="Water/index.html" class="grid-card">
+            <div class="card-icon">💧</div>
+            <h3>Water Tracker</h3>
+            <p>Stay hydrated and build healthy habits.</p>
+        </a>
+
+        <a href="Notes/index.html" class="grid-card">
+            <div class="card-icon">📝</div>
+            <h3>Notes</h3>
+            <p>Save personal thoughts, ideas, and reminders.</p>
+        </a>
+
+        <a href="Gallery/index.html" class="grid-card">
+            <div class="card-icon">📷</div>
+            <h3>Gallery</h3>
+            <p>Keep your favorite photos and memories.</p>
+        </a>
+
+    </section>
+
+</main>
+
+<!-- Login / Register modal (2 steps: username, then password) -->
+<div id="auth-modal" class="modal hidden">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeAuthModal()" role="button" tabindex="0" aria-label="Close">&times;</span>
+
+        <div id="auth-step-1">
+            <h2>Choose a Username</h2>
+            <input type="text" id="username-input" placeholder="Enter username...">
+            <button class="btn btn-primary" onclick="handleUsernameSubmit()">Next</button>
+        </div>
+
+        <div id="auth-step-2" class="hidden">
+            <h2 id="password-title">Enter Password</h2>
+            <p id="auth-status-msg"></p>
+            <input type="password" id="password-input" placeholder="Enter password...">
+            <button class="btn btn-primary" onclick="handlePasswordSubmit()">Submit</button>
         </div>
     </div>
+</div>
 
-    <script src="script.js"></script>
+<!-- Together Space partner-code modal -->
+<div id="together-modal" class="modal hidden">
+    <div class="modal-content together-modal-content">
+        <span class="close-btn" onclick="closeTogetherModal()" role="button" tabindex="0" aria-label="Close">&times;</span>
+        <div class="together-modal-icon">💗</div>
+        <h2>Together Space</h2>
+        <p>Connect with your partner using a shared code.</p>
+        <input type="text" id="partner-code-input" placeholder="Enter partner code...">
+        <div class="together-actions">
+            <button class="btn btn-soft" onclick="generatePartnerCode()">Generate Code</button>
+            <button class="btn btn-primary" onclick="connectPartner()">Enter</button>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>

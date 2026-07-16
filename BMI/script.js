@@ -1,3 +1,4 @@
+//BMI script.js
 const currentUser = localStorage.getItem("mimiTracker_session") || "guest";
 
 // Track dynamic settings globally

@@ -1,3 +1,4 @@
+//Weight script.js
 const currentUser = localStorage.getItem("mimiTracker_session") || "guest";
 
 document.addEventListener("DOMContentLoaded", () => {

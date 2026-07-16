@@ -1,3 +1,4 @@
+//Period script.js
 const currentUser = localStorage.getItem("mimiTracker_session") || "guest";
 let localSelectedSymptoms = [];
 

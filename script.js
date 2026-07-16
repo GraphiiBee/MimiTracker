@@ -1,20 +1,29 @@
+/* ============================================================
+   MimiTracker — Home Page Script
+   Handles login/register, session state, and Home snapshots
+   ============================================================ */
+
 let tempUsername = "";
 let isExistingUser = false;
+let generatedPartnerCode = "";
 
 document.addEventListener("DOMContentLoaded", () => {
     checkSession();
+    initAccessibility();
 });
 
-function openAuthModal() {
+/* ---------- Auth modal open / close / reset ---------- */
+
+function openAuthModal(){
     document.getElementById("auth-modal").classList.remove("hidden");
     resetAuthModal();
 }
 
-function closeAuthModal() {
+function closeAuthModal(){
     document.getElementById("auth-modal").classList.add("hidden");
 }
 
-function resetAuthModal() {
+function resetAuthModal(){
     document.getElementById("auth-step-1").classList.remove("hidden");
     document.getElementById("auth-step-2").classList.add("hidden");
     document.getElementById("username-input").value = "";
@@ -22,165 +31,272 @@ function resetAuthModal() {
     tempUsername = "";
 }
 
-function handleUsernameSubmit() {
+/* ---------- Step 1: username (checks if account already exists) ---------- */
+
+function handleUsernameSubmit(){
     const usernameInput = document.getElementById("username-input").value.trim();
-    if (!usernameInput) return alert("Please type a username!");
+
+    if(!usernameInput){
+        alert("Please type a username!");
+        return;
+    }
 
     tempUsername = usernameInput.toLowerCase();
-    const savedUserData = localStorage.getItem("user_" + tempUsername);
+    const savedUser = localStorage.getItem("user_" + tempUsername);
 
     document.getElementById("auth-step-1").classList.add("hidden");
     document.getElementById("auth-step-2").classList.remove("hidden");
 
-    if (savedUserData) {
+    if(savedUser){
         isExistingUser = true;
-        document.getElementById("password-title").innerText = "Log In";
-        document.getElementById("auth-status-msg").innerText = `"${usernameInput}" is registered. Enter your password.`;
-    } else {
+        document.getElementById("password-title").innerText = "Welcome Back ✨";
+        document.getElementById("auth-status-msg").innerText = `"${usernameInput}" already exists. Enter your password.`;
+    }else{
         isExistingUser = false;
-        document.getElementById("password-title").innerText = "Register Name";
-        document.getElementById("auth-status-msg").innerText = `"${usernameInput}" is available! Create a password to claim it.`;
+        document.getElementById("password-title").innerText = "Create Your Account 🌸";
+        document.getElementById("auth-status-msg").innerText = `"${usernameInput}" is available! Create a password.`;
     }
 }
 
-function handlePasswordSubmit() {
-    const passwordInput = document.getElementById("password-input").value.trim();
-    if (!passwordInput) return alert("Password cannot be blank!");
+/* ---------- Step 2: password (logs in or registers, same rule as before) ---------- */
 
-    if (isExistingUser) {
-        const savedUserData = JSON.parse(localStorage.getItem("user_" + tempUsername));
-        if (savedUserData.password === passwordInput) {
+function handlePasswordSubmit(){
+    const password = document.getElementById("password-input").value.trim();
+
+    if(!password){
+        alert("Password cannot be blank!");
+        return;
+    }
+
+    if(isExistingUser){
+        const userData = JSON.parse(localStorage.getItem("user_" + tempUsername));
+
+        if(userData.password === password){
             loginSuccess(tempUsername);
-        } else {
+        }else{
             alert("Incorrect password! Try again.");
         }
-    } else {
-        const newUserData = {
-            username: tempUsername,
-            password: passwordInput
-        };
-        localStorage.setItem("user_" + tempUsername, JSON.stringify(newUserData));
+    }else{
+        const newUser = { username:tempUsername, password:password };
+        localStorage.setItem("user_" + tempUsername, JSON.stringify(newUser));
         loginSuccess(tempUsername);
     }
 }
 
-function loginSuccess(username) {
+function loginSuccess(username){
     localStorage.setItem("mimiTracker_session", username);
     closeAuthModal();
     checkSession();
 }
 
-function logout() {
+function logout(){
     localStorage.removeItem("mimiTracker_session");
     checkSession();
 }
 
-function checkSession() {
+/* ---------- Session state: toggles header/UI and loads snapshots ---------- */
+
+function checkSession(){
     const activeUser = localStorage.getItem("mimiTracker_session");
     const authBtn = document.getElementById("auth-btn");
     const userDisplay = document.getElementById("user-display");
     const logoutBtn = document.getElementById("logout-btn");
     const welcomeText = document.getElementById("welcome-text");
-    const previewsBlock = document.getElementById("home-previews");
+    const previews = document.getElementById("home-previews");
 
-    if (activeUser) {
+    if(activeUser){
         authBtn.classList.add("hidden");
         userDisplay.classList.remove("hidden");
         logoutBtn.classList.remove("hidden");
-        previewsBlock.classList.remove("hidden");
-        
-        const displayLabel = activeUser.charAt(0).toUpperCase() + activeUser.slice(1);
-        userDisplay.innerText = `🌸 Hello, ${displayLabel}`;
-        welcomeText.innerText = `Welcome back, ${displayLabel} ✨`;
+        previews.classList.remove("hidden");
+
+        const displayName = activeUser.charAt(0).toUpperCase() + activeUser.slice(1);
+        userDisplay.innerText = `🌸 Hello, ${displayName}`;
+        welcomeText.innerText = `Welcome back, ${displayName} ✨`;
 
         renderPeriodPreview(activeUser);
         renderRemindersPreview(activeUser);
-    } else {
+        renderTogetherPreview(activeUser);
+    }else{
         authBtn.classList.remove("hidden");
         userDisplay.classList.add("hidden");
         logoutBtn.classList.add("hidden");
-        previewsBlock.classList.add("hidden");
+        previews.classList.add("hidden");
         welcomeText.innerText = "Welcome to MimiTracker ✨";
     }
 }
 
-function renderPeriodPreview(user) {
-    const outputBox = document.getElementById("home-period-content");
+/* ---------- Together Space modal controls ---------- */
+
+function openTogetherModal(){
+    document.getElementById("together-modal").classList.remove("hidden");
+}
+
+function closeTogetherModal(){
+    document.getElementById("together-modal").classList.add("hidden");
+}
+
+// Card click: already connected -> go straight in, otherwise open the code modal
+function handleTogetherCardClick(){
+    const activeUser = localStorage.getItem("mimiTracker_session");
+    if(!activeUser) return;
+
+    const isConnected = localStorage.getItem(`partner_${activeUser}`);
+    if(isConnected){
+        window.location.href = "TogetherSpace/index.html";
+    }else{
+        openTogetherModal();
+    }
+}
+
+function generatePartnerCode(){
+    const activeUser = localStorage.getItem("mimiTracker_session");
+
+    if(!activeUser){
+        alert("Please login first.");
+        return;
+    }
+
+    generatedPartnerCode = Math.random().toString(36).substring(2,8).toUpperCase();
+    localStorage.setItem(`partner_code_${activeUser}`, generatedPartnerCode);
+    document.getElementById("partner-code-input").value = generatedPartnerCode;
+}
+
+function connectPartner(){
+    const activeUser = localStorage.getItem("mimiTracker_session");
+    const code = document.getElementById("partner-code-input").value.trim().toUpperCase();
+
+    if(!code){
+        alert("Please enter a partner code.");
+        return;
+    }
+
+    localStorage.setItem(`partner_${activeUser}`, code);
+    closeTogetherModal();
+    window.location.href = "TogetherSpace/index.html";
+}
+
+/* ---------- Snapshot: Together Space status text + badge ---------- */
+
+function renderTogetherPreview(user){
+    const statusText = document.getElementById("together-space-status");
+    const statusBadge = document.getElementById("together-status-badge");
+    if(!statusText) return;
+
+    const isConnected = localStorage.getItem(`partner_${user}`);
+
+    if(isConnected){
+        statusText.innerHTML = "Your shared space is ready 💗 Tap to view your moments together.";
+        if(statusBadge){
+            statusBadge.innerText = "Connected";
+            statusBadge.classList.add("connected");
+        }
+    }else{
+        statusText.innerHTML = "Connect with someone special to unlock your shared space.";
+        if(statusBadge){
+            statusBadge.innerText = "Not Connected";
+            statusBadge.classList.remove("connected");
+        }
+    }
+}
+
+/* ---------- Snapshot: cycle countdown ---------- */
+
+function renderPeriodPreview(user){
+    const output = document.getElementById("home-period-content");
     const history = JSON.parse(localStorage.getItem(`period_history_${user}`)) || [];
 
-    if (history.length === 0) {
-        outputBox.innerHTML = "No cycle data logged yet. Click the card below to configure tracking! 🌸";
+    if(history.length === 0){
+        output.innerHTML = "No cycle data logged yet. Start tracking whenever you're ready 🌸";
         return;
     }
 
     const latest = history[0];
     const lastStart = new Date(latest.startDate + "T00:00:00");
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    today.setHours(0,0,0,0);
 
-    const nextTarget = new Date(lastStart.getTime());
-    nextTarget.setDate(nextTarget.getDate() + latest.cycleLength);
+    const next = new Date(lastStart);
+    next.setDate(next.getDate() + latest.cycleLength);
 
-    const timeDiff = nextTarget.getTime() - today.getTime();
-    const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+    const difference = next.getTime() - today.getTime();
+    const days = Math.ceil(difference / (1000 * 60 * 60 * 24));
 
-    if (daysLeft > 0) {
-        outputBox.innerHTML = `Next period expected in <span class="preview-highlight">${daysLeft}</span> days.`;
-    } else if (daysLeft === 0) {
-        outputBox.innerHTML = `<span class="preview-highlight">🚨 Period predicted today!</span> Take care of yourself.`;
-    } else {
-        outputBox.innerHTML = `Cycle is running <span class="preview-highlight">${Math.abs(daysLeft)}</span> days late.`;
+    if(days > 0){
+        output.innerHTML = `Next period expected in <span class="preview-highlight">${days}</span> days.`;
+    }else if(days === 0){
+        output.innerHTML = `<span class="preview-highlight">🌸 Expected today.</span> Take care of yourself.`;
+    }else{
+        output.innerHTML = `Cycle is <span class="preview-highlight">${Math.abs(days)}</span> days late.`;
     }
 }
 
-function renderRemindersPreview(user) {
-    const displayBox = document.getElementById("home-reminders-content");
+/* ---------- Snapshot: next 3 upcoming reminders ---------- */
+
+function renderRemindersPreview(user){
+    const box = document.getElementById("home-reminders-content");
     const reminders = JSON.parse(localStorage.getItem(`reminders_${user}`)) || [];
 
-    if (reminders.length === 0) {
-        displayBox.innerHTML = "No events scheduled yet. Tap Calendar to add entries! ✨";
+    if(reminders.length === 0){
+        box.innerHTML = "No upcoming events yet. Add reminders anytime ✨";
         return;
     }
 
     const today = new Date();
-    const currentYear = today.getFullYear();
-    const shortMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    today.setHours(0,0,0,0);
+    const year = today.getFullYear();
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
-    const parsedEvents = reminders.map(item => {
-        let yr = item.year ? parseInt(item.year) : currentYear;
-        let eventDate = new Date(yr, parseInt(item.month) - 1, parseInt(item.day), 0, 0, 0);
+    const events = reminders.map(item => {
+        let eventYear = item.year ? Number(item.year) : year;
+        let date = new Date(eventYear, Number(item.month) - 1, Number(item.day));
 
-        if (!item.year && eventDate.getTime() < today.setHours(0, 0, 0, 0)) {
-            eventDate.setFullYear(currentYear + 1);
+        if(!item.year && date < today){
+            date.setFullYear(year + 1);
         }
 
-        return {
-            title: item.title,
-            dateObj: eventDate,
-            dateString: `${shortMonths[eventDate.getMonth()]} ${eventDate.getDate()}`
-        };
+        return { title: item.title, date: date, label: `${months[date.getMonth()]} ${date.getDate()}` };
     });
 
-    const absoluteToday = new Date();
-    absoluteToday.setHours(0, 0, 0, 0);
+    const upcoming = events.filter(e => e.date >= today).sort((a, b) => a.date - b.date).slice(0, 3);
 
-    const filteredUpcoming = parsedEvents
-        .filter(ev => ev.dateObj.getTime() >= absoluteToday.getTime())
-        .sort((a, b) => a.dateObj.getTime() - b.dateObj.getTime());
-
-    if (filteredUpcoming.length === 0) {
-        displayBox.innerHTML = "No upcoming events scheduled.";
+    if(upcoming.length === 0){
+        box.innerHTML = "No upcoming events scheduled.";
         return;
     }
 
-    displayBox.innerHTML = "";
-    filteredUpcoming.slice(0, 3).forEach(ev => {
+    box.innerHTML = "";
+
+    upcoming.forEach(event => {
         const row = document.createElement("div");
         row.className = "preview-row";
         row.innerHTML = `
-            <span class="preview-row-title">${ev.title}</span>
-            <span class="preview-row-date">${ev.dateString}</span>
+            <span class="preview-row-title">${event.title}</span>
+            <span class="preview-row-date">${event.label}</span>
         `;
-        displayBox.appendChild(row);
+        box.appendChild(row);
+    });
+}
+
+/* ---------- Keyboard accessibility for clickable, non-native elements ---------- */
+
+function initAccessibility(){
+    const togetherCard = document.querySelector(".together-card");
+    if(togetherCard){
+        togetherCard.addEventListener("keydown", e => {
+            if(e.key === "Enter" || e.key === " "){
+                e.preventDefault();
+                handleTogetherCardClick();
+            }
+        });
+    }
+
+    document.querySelectorAll(".close-btn").forEach(btn => {
+        btn.addEventListener("keydown", e => {
+            if(e.key === "Enter" || e.key === " "){
+                e.preventDefault();
+                btn.click();
+            }
+        });
     });
 }
