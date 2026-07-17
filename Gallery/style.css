@@ -249,10 +249,12 @@ header {
 }
 
 /* Filters */
-.filter-none {}
+.filter-none { filter: none; }
 .filter-softpink { filter: brightness(1.1) saturate(1.3) hue-rotate(-10deg); }
 .filter-dreamy { filter: blur(1px) brightness(1.2); }
 .filter-filmgrain { filter: contrast(1.2) grayscale(0.2); }
+
+
 
 /* Controls */
 .photobooth-controls {
