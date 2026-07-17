@@ -5,10 +5,20 @@ const currentUser = localStorage.getItem("mimiTracker_session") || "guest";
 let dailyGoal = parseInt(localStorage.getItem(`water_goal_${currentUser}`)) || 2000;
 
 document.addEventListener("DOMContentLoaded", () => {
+    applySavedTheme();   // 🌙 Auto‑apply dark mode
+
     // Populate the Goal input field view with her active preference immediately
     document.getElementById("custom-goal-input").value = dailyGoal;
     checkAndLoadWaterLogs();
 });
+
+/* ============================================================
+   🌙 APPLY SAVED THEME (NO toggle button)
+   ============================================================ */
+function applySavedTheme(){
+    const saved = localStorage.getItem("theme") || "light";
+    document.body.setAttribute("data-theme", saved);
+}
 
 // Returns the date footprint code string for tracking record isolation (YYYY-MM-DD)
 function getTodayDateKey() {
@@ -29,7 +39,6 @@ function updateDailyGoal() {
     dailyGoal = newGoal;
     localStorage.setItem(`water_goal_${currentUser}`, dailyGoal);
 
-    // Refresh calculations based on current day totals instantly
     const todayKey = getTodayDateKey();
     let currentIntake = 0;
     const savedLog = JSON.parse(localStorage.getItem(`water_log_${currentUser}`));
@@ -50,7 +59,6 @@ function checkAndLoadWaterLogs() {
     if (savedLog && savedLog.date === todayKey) {
         currentIntake = savedLog.amount;
     } else {
-        // Automatically reset and instantiate empty metrics for the clean calendar sequence
         saveIntakeToStorage(0);
     }
 
@@ -83,7 +91,7 @@ function addCustomWater() {
     }
 
     addWater(val);
-    input.value = ""; // Resets text after execution completes
+    input.value = "";
 }
 
 // Wipes progress logs back to ground zero upon explicit confirmation action
@@ -119,6 +127,5 @@ function updateHydrationUI(amount) {
         remainsText.style.color = "#777";
     }
 
-    // Adjust linear indicator bounds smoothly
     document.getElementById("progress-bar-fill").style.width = `${percent}%`;
 }

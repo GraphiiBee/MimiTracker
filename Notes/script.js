@@ -1,490 +1,213 @@
-//Notes script.js
-let activeUser = "";
-let selectedColorHex = "#FFF0F5";
+/* Notes/script.js */
+
+const currentUser = localStorage.getItem("mimiTracker_session") || "guest";
+let selectedColor = "#FFF0F2";
 let attachedImageBase64 = "";
-let selectedVisibility = "private";
 
+// Load dark mode if set
 document.addEventListener("DOMContentLoaded", () => {
-    activeUser = localStorage.getItem("mimiTracker_session");
+    const theme = localStorage.getItem("theme") || "light";
+    document.body.setAttribute("data-theme", theme);
 
-    if (!activeUser) {
-        alert("Please log in on the home page first! 🌸");
-        window.location.href = "../index.html";
+    setupHeader();
+    setupColorPicker();
+    setupImageUpload();
+    renderNotes();
+});
+
+// Partner badge
+function setupHeader() {
+    const partnerCode = localStorage.getItem(`partner_${currentUser}`);
+    const partnerName = localStorage.getItem(`partnerName_${currentUser}`);
+    const statusEl = document.getElementById("partner-status");
+
+    if (partnerName) {
+        statusEl.style.display = "block";
+        statusEl.innerHTML = `Connected with<br><strong>${escapeHTML(partnerName)}</strong>`;
+    } else if (partnerCode) {
+        statusEl.style.display = "block";
+        statusEl.innerHTML = `Connected<br><strong>Code: ${escapeHTML(partnerCode)}</strong>`;
+    }
+}
+
+// Auto-resize textarea
+function autoResize(textarea) {
+    textarea.style.height = "auto";
+    textarea.style.height = textarea.scrollHeight + "px";
+}
+
+// Color picker
+function setupColorPicker() {
+    const dots = document.querySelectorAll(".color-picker .color-dot");
+    const creatorCard = document.getElementById("note-creator-card");
+
+    dots.forEach(dot => {
+        dot.addEventListener("click", e => {
+            dots.forEach(d => d.classList.remove("active"));
+            e.target.classList.add("active");
+
+            selectedColor = e.target.getAttribute("data-color");
+            creatorCard.style.backgroundColor = selectedColor;
+        });
+    });
+}
+
+// IMAGE UPLOAD RESTORED
+function setupImageUpload() {
+    const fileInput = document.getElementById("note-image");
+    const previewLabel = document.getElementById("file-name-preview");
+
+    fileInput.addEventListener("change", e => {
+        const file = e.target.files[0];
+
+        if (!file) {
+            attachedImageBase64 = "";
+            previewLabel.textContent = "No image selected";
+            return;
+        }
+
+        if (file.size > 800000) {
+            alert("Please select an image smaller than 800KB 🌸");
+            fileInput.value = "";
+            attachedImageBase64 = "";
+            previewLabel.textContent = "No image selected";
+            return;
+        }
+
+        previewLabel.textContent = file.name;
+
+        const reader = new FileReader();
+        reader.onload = event => {
+            attachedImageBase64 = event.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+// Load BOTH old and new notes safely
+function getSafeNotes() {
+    const newKey = `notes_${currentUser}`;
+    const oldKey = `mimiNotes_${currentUser}`;
+
+    const newNotes = JSON.parse(localStorage.getItem(newKey)) || [];
+    const oldNotes = JSON.parse(localStorage.getItem(oldKey)) || [];
+
+    // Convert old notes to new format but KEEP images
+    const convertedOld = oldNotes.map(note => ({
+        id: note.id || Date.now(),
+        content: note.content || "",
+        color: note.colorHex || "#FFF0F2",
+        date: note.timestamp || "",
+        isShared: note.visibility === "shared",
+        author: currentUser,
+        image: note.image || ""
+    }));
+
+    return [...convertedOld, ...newNotes];
+}
+
+function saveNotesToStorage(notesArray) {
+    const newKey = `notes_${currentUser}`;
+    localStorage.setItem(newKey, JSON.stringify(notesArray));
+}
+
+function renderNotes() {
+    const gridEl = document.getElementById("notes-grid");
+    const notes = getSafeNotes();
+
+    gridEl.innerHTML = "";
+
+    if (notes.length === 0) {
+        gridEl.innerHTML = `<p style="text-align:center;color:#A0A0A0;margin-top:2rem;">No notes yet. Add your first one above! ✨</p>`;
         return;
     }
 
-    initializeColorPicker();
-    initializeVisibility();
-    initializeImageReader();
-    renderUserNotes();
-});
+    notes.sort((a, b) => b.id - a.id);
 
+    notes.forEach(note => {
+        const item = document.createElement("div");
+        item.className = "note-item";
+        item.style.backgroundColor = note.color;
+
+        const badgeText = note.isShared ? "💖 Shared" : "🔒 Only Me";
+        const badgeClass = note.isShared ? "shared" : "private";
+
+        let imageHTML = "";
+        if (note.image) {
+            imageHTML = `
+                <img src="${note.image}" class="note-attached-img" alt="Note Image">
+            `;
+        }
+
+        item.innerHTML = `
+            <div class="note-header">
+                <span class="type-badge ${badgeClass}">${badgeText}</span>
+            </div>
+
+            <div class="note-content-text">${escapeHTML(note.content)}</div>
+
+            ${imageHTML}
+
+            <div class="note-footer">
+                <span>${note.date}</span>
+                <button class="delete-btn" onclick="deleteNote(${note.id})">×</button>
+            </div>
+        `;
+
+        gridEl.appendChild(item);
+    });
+}
+
+function saveNote() {
+    const contentEl = document.getElementById("note-content");
+    const content = contentEl.value.trim();
+    const isShared = document.querySelector('input[name="note-visibility"]:checked').value === "shared";
+
+    if (!content && !attachedImageBase64) {
+        alert("Please write something or attach an image 💕");
+        return;
+    }
+
+    const notes = getSafeNotes();
+    const today = new Date();
+    const dateStr = today.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+
+    const newNote = {
+        id: Date.now(),
+        content,
+        color: selectedColor,
+        date: dateStr,
+        isShared,
+        author: currentUser,
+        image: attachedImageBase64
+    };
+
+    notes.push(newNote);
+    saveNotesToStorage(notes);
+
+    contentEl.value = "";
+    contentEl.style.height = "auto";
+    attachedImageBase64 = "";
+    document.getElementById("note-image").value = "";
+    document.getElementById("file-name-preview").textContent = "No image selected";
+
+    renderNotes();
+}
+
+function deleteNote(noteId) {
+    if (confirm("Are you sure you want to remove this note?")) {
+        let notes = getSafeNotes();
+        notes = notes.filter(note => note.id !== noteId);
+        saveNotesToStorage(notes);
+        renderNotes();
+    }
+}
 
 function escapeHTML(str) {
-    if (!str) return "";
-
-    return str
+    return String(str)
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
-}
-
-
-
-function initializeColorPicker() {
-
-    const dots = document.querySelectorAll(".color-dot");
-
-    dots.forEach(dot => {
-
-        dot.addEventListener("click", e => {
-
-            dots.forEach(d => d.classList.remove("selected"));
-
-            e.target.classList.add("selected");
-
-            selectedColorHex =
-            e.target.getAttribute("data-color");
-
-        });
-
-    });
-
-}
-
-
-
-function initializeVisibility(){
-
-    const options =
-    document.querySelectorAll(".visibility-option");
-
-
-    if(!options.length) return;
-
-
-    options.forEach(option=>{
-
-        option.addEventListener("click",()=>{
-
-            options.forEach(o=>
-                o.classList.remove("selected")
-            );
-
-
-            option.classList.add("selected");
-
-
-            selectedVisibility =
-            option.getAttribute("data-visibility");
-
-        });
-
-    });
-
-}
-
-
-
-function initializeImageReader(){
-
-    const fileSelector =
-    document.getElementById("note-image");
-
-
-    const nameLabel =
-    document.getElementById("file-name-preview");
-
-
-    fileSelector.addEventListener("change", e=>{
-
-
-        const file =
-        e.target.files[0];
-
-
-        if(!file){
-
-            attachedImageBase64 = "";
-
-            nameLabel.innerText =
-            "No image selected";
-
-            return;
-
-        }
-
-
-
-        if(file.size > 800000){
-
-            alert(
-            "Please select an image smaller than 800KB to keep things loading fast!"
-            );
-
-
-            fileSelector.value = "";
-
-            attachedImageBase64 = "";
-
-            nameLabel.innerText =
-            "No image selected";
-
-
-            return;
-
-        }
-
-
-
-        nameLabel.innerText =
-        file.name;
-
-
-
-        const reader =
-        new FileReader();
-
-
-
-        reader.onload = event=>{
-
-            attachedImageBase64 =
-            event.target.result;
-
-        };
-
-
-        reader.readAsDataURL(file);
-
-
-    });
-
-}
-
-
-
-
-function createNewNote(){
-
-    const titleVal =
-    document.getElementById("note-title")
-    .value.trim();
-
-
-    const bodyVal =
-    document.getElementById("note-content")
-    .value.trim();
-
-
-
-    if(!titleVal && !bodyVal && !attachedImageBase64){
-
-        return alert(
-        "Your note looks completely empty! Type something first. ✨"
-        );
-
-    }
-
-
-
-    const storageKey =
-    `mimiNotes_${activeUser}`;
-
-
-
-    const collection =
-    JSON.parse(
-        localStorage.getItem(storageKey)
-    ) || [];
-
-
-
-    const now =
-    new Date();
-
-
-
-    const timeLabel =
-    now.toLocaleDateString(
-        "en-US",
-        {
-            month:"short",
-            day:"numeric",
-            hour:"2-digit",
-            minute:"2-digit"
-        }
-    );
-
-
-
-    const newNote = {
-
-        id:
-        "note_" + Date.now(),
-
-        title:
-        titleVal || "Untitled Thoughts",
-
-        content:
-        bodyVal,
-
-        image:
-        attachedImageBase64,
-
-        colorHex:
-        selectedColorHex,
-
-        timestamp:
-        timeLabel,
-
-        visibility:
-        selectedVisibility
-
-    };
-
-
-
-    collection.unshift(newNote);
-
-
-
-    localStorage.setItem(
-        storageKey,
-        JSON.stringify(collection)
-    );
-
-
-
-    document.getElementById("note-title").value = "";
-
-    document.getElementById("note-content").value = "";
-
-    document.getElementById("note-image").value = "";
-
-    document.getElementById("file-name-preview").innerText =
-    "No image selected";
-
-
-    attachedImageBase64 = "";
-
-    selectedVisibility = "private";
-
-
-    renderUserNotes();
-
-}
-
-
-
-
-function renderUserNotes(){
-
-    const targetGrid =
-    document.getElementById("notes-grid");
-
-
-    const storageKey =
-    `mimiNotes_${activeUser}`;
-
-
-    let savedNotes =
-    JSON.parse(
-        localStorage.getItem(storageKey)
-    ) || [];
-
-
-
-    // Upgrade old notes automatically
-    savedNotes =
-    savedNotes.map(note=>{
-
-        if(!note.visibility){
-
-            note.visibility = "private";
-
-        }
-
-        return note;
-
-    });
-
-
-
-    localStorage.setItem(
-        storageKey,
-        JSON.stringify(savedNotes)
-    );
-
-
-
-
-    if(savedNotes.length === 0){
-
-        targetGrid.innerHTML = `
-
-        <div style="
-        grid-column:1/-1;
-        text-align:center;
-        color:#aaa;
-        padding:3rem 0;
-        font-weight:600;
-        ">
-
-        Your notes board is clear!
-        Write your first idea above 📝✨
-
-        </div>
-
-        `;
-
-        return;
-
-    }
-
-
-
-
-    targetGrid.innerHTML = "";
-
-
-
-    savedNotes.forEach(note=>{
-
-
-        const containerBox =
-        document.createElement("div");
-
-
-        containerBox.className =
-        "sticky-note";
-
-
-        containerBox.style.backgroundColor =
-        note.colorHex;
-
-
-
-
-        const safeTitle =
-        escapeHTML(note.title);
-
-
-
-        const safeContent =
-        escapeHTML(note.content)
-        .replace(/\n/g,"<br>");
-
-
-
-
-        let imageHTML = "";
-
-
-
-        if(note.image){
-
-            imageHTML =
-            `
-            <img 
-            src="${note.image}"
-            class="note-attached-img"
-            alt="Pinned Content">
-            `;
-
-        }
-
-
-
-
-        containerBox.innerHTML = `
-
-        <div>
-
-            <div class="note-header-row">
-
-                <div class="note-headline">
-                ${safeTitle}
-                </div>
-
-
-                <button 
-                class="delete-note-btn"
-                onclick="removeStickyNote('${note.id}')">
-
-                &times;
-
-                </button>
-
-            </div>
-
-
-            <div class="note-body">
-            ${safeContent}
-            </div>
-
-
-            ${imageHTML}
-
-
-        </div>
-
-
-        <div class="note-timestamp">
-
-        ${note.timestamp}
-
-        </div>
-
-        `;
-
-
-
-        targetGrid.appendChild(containerBox);
-
-
-    });
-
-
-}
-
-
-
-
-function removeStickyNote(targetId){
-
-    if(!confirm("Delete this note permanently?"))
-    return;
-
-
-
-    const storageKey =
-    `mimiNotes_${activeUser}`;
-
-
-
-    let collection =
-    JSON.parse(
-        localStorage.getItem(storageKey)
-    ) || [];
-
-
-
-    collection =
-    collection.filter(
-        note=>note.id !== targetId
-    );
-
-
-
-    localStorage.setItem(
-        storageKey,
-        JSON.stringify(collection)
-    );
-
-
-    renderUserNotes();
-
 }

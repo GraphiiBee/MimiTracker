@@ -12,6 +12,7 @@ body {
     color: #4A4A4A;
     min-height: 100vh;
     padding-bottom: 3rem;
+    transition: background-color .25s ease, color .25s ease;
 }
 
 header {
@@ -20,6 +21,7 @@ header {
     display: flex;
     align-items: center;
     box-shadow: 0 4px 15px rgba(255, 182, 193, 0.15);
+    transition: background-color .25s ease, box-shadow .25s ease;
 }
 
 .back-btn {
@@ -52,6 +54,7 @@ header {
     padding: 1.5rem;
     border-radius: 24px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02);
+    transition: background-color .25s ease, box-shadow .25s ease;
 }
 
 .card h3 {
@@ -69,7 +72,7 @@ header {
     margin-bottom: 1.5rem;
 }
 
-/* Floating Orb Graphic Graphic Element */
+/* Floating Orb Graphic */
 .water-bubble {
     width: 80px;
     height: 80px;
@@ -80,6 +83,7 @@ header {
     justify-content: center;
     box-shadow: 0 6px 15px rgba(129, 212, 250, 0.3);
     animation: float 3s ease-in-out infinite;
+    transition: background-color .25s ease, box-shadow .25s ease;
 }
 
 #water-percentage {
@@ -110,14 +114,13 @@ header {
     font-weight: 600;
 }
 
-/* Rounded Inline Bar Fill Graph */
+/* Progress Bar */
 .progress-bar-container {
     width: 100%;
     height: 16px;
     background-color: #F0F4F8;
     border-radius: 20px;
     overflow: hidden;
-    position: relative;
 }
 
 .progress-bar-fill {
@@ -128,7 +131,7 @@ header {
     transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Intake Log Interaction Button Grids */
+/* Quick Add Buttons */
 .quick-add-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -155,10 +158,6 @@ header {
     border-color: #81D4FA;
 }
 
-.water-btn:active {
-    transform: translateY(0);
-}
-
 .water-btn .icon {
     font-size: 1.6rem;
 }
@@ -175,7 +174,7 @@ header {
     font-weight: 600;
 }
 
-/* Custom Metric Input Rows */
+/* Custom Input */
 .custom-add-row {
     display: flex;
     gap: 0.75rem;
@@ -189,6 +188,7 @@ input[type="number"] {
     border-radius: 14px;
     outline: none;
     font-size: 0.95rem;
+    transition: border-color .25s ease, background-color .25s ease, color .25s ease;
 }
 
 input:focus {
@@ -207,7 +207,7 @@ input:focus {
 }
 
 #update-goal-btn {
-    background-color: #AED581; /* Soft green accent for target completion features */
+    background-color: #AED581;
 }
 
 #custom-add-btn:hover { background-color: #29B6F6; }
@@ -237,6 +237,7 @@ input:focus {
     50% { transform: translateY(-4px); }
 }
 
+/* Mobile */
 @media (max-width: 680px) {
     .container {
         margin: 1rem auto;
@@ -245,4 +246,114 @@ input:focus {
     .card {
         padding: 1.25rem;
     }
+}
+
+/* ==========================================================
+   🌙 DARK MODE OVERRIDES (NO toggle button)
+   ========================================================== */
+
+body[data-theme="dark"] {
+    background-color: #1E1E22;
+    color: #EDEDED;
+}
+
+/* Header */
+body[data-theme="dark"] header {
+    background-color: #2A2A35;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+}
+
+body[data-theme="dark"] .back-btn {
+    color: #FFB7C8;
+}
+
+body[data-theme="dark"] .logo {
+    color: #81D4FA;
+}
+
+/* Cards */
+body[data-theme="dark"] .card {
+    background-color: #2A2A35;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+}
+
+body[data-theme="dark"] .card h3 {
+    color: #81D4FA;
+}
+
+/* Water Bubble */
+body[data-theme="dark"] .water-bubble {
+    background: radial-gradient(circle at 30% 30%, #3A3A3A, #2F2F38);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+}
+
+body[data-theme="dark"] #water-percentage {
+    color: #81D4FA;
+}
+
+/* Text Stats */
+body[data-theme="dark"] #water-current-text {
+    color: #EDEDED;
+}
+
+body[data-theme="dark"] #water-remains-text {
+    color: #CFCFCF;
+}
+
+body[data-theme="dark"] .highlight-blue {
+    color: #81D4FA;
+}
+
+/* Progress Bar */
+body[data-theme="dark"] .progress-bar-container {
+    background-color: #3A3A3A;
+}
+
+body[data-theme="dark"] .progress-bar-fill {
+    background: linear-gradient(90deg, #4FC3F7, #0288D1);
+}
+
+/* Buttons */
+body[data-theme="dark"] .water-btn {
+    background-color: #2F2F38;
+    border-color: #3A3A3A;
+}
+
+body[data-theme="dark"] .water-btn:hover {
+    background-color: #3A3A3A;
+    border-color: #81D4FA;
+}
+
+body[data-theme="dark"] .water-btn .label {
+    color: #81D4FA;
+}
+
+body[data-theme="dark"] .water-btn .subtext {
+    color: #CFCFCF;
+}
+
+body[data-theme="dark"] input[type="number"] {
+    background-color: #262630;
+    border-color: #444;
+    color: #EDEDED;
+}
+
+body[data-theme="dark"] input[type="number"]:focus {
+    border-color: #81D4FA;
+}
+
+body[data-theme="dark"] #custom-add-btn {
+    background-color: #4FC3F7;
+}
+
+body[data-theme="dark"] #update-goal-btn {
+    background-color: #AED581;
+}
+
+body[data-theme="dark"] .reset-btn {
+    color: #CFCFCF;
+}
+
+body[data-theme="dark"] .reset-btn:hover {
+    color: #FF9AA2;
 }

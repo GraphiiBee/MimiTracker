@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MimiTracker – Gallery</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body data-theme="light">
+
+    <!-- Header -->
+    <header>
+        <a href="../index.html" class="back-btn">🌸 Back Home</a>
+        <div class="logo">📸 Mimi Photobooth</div>
+    </header>
+
+    <main class="container">
+
+        <!-- Mode Switcher -->
+        <div class="card mode-card">
+            <h3>Gallery Mode</h3>
+            <div class="mode-switch">
+                <button class="mode-btn active" data-mode="onlyme" onclick="switchGalleryMode('onlyme')">Only Me</button>
+                <button class="mode-btn" data-mode="shared" onclick="switchGalleryMode('shared')">Shared</button>
+            </div>
+        </div>
+
+        <!-- Theme Switcher -->
+        <div class="card theme-card">
+            <h3>Theme</h3>
+            <div class="theme-options">
+                <button onclick="setGalleryTheme('minimal')" class="theme-btn">Minimal</button>
+                <button onclick="setGalleryTheme('kawaii')" class="theme-btn">Kawaii</button>
+                <button onclick="setGalleryTheme('film')" class="theme-btn">Film</button>
+                <button onclick="setGalleryTheme('couple')" class="theme-btn">Couple</button>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="gallery" onclick="switchTab('gallery')">Gallery</button>
+            <button class="tab-btn" data-tab="photobooth" onclick="switchTab('photobooth')">Photobooth</button>
+            <button class="tab-btn" data-tab="collage" onclick="switchTab('collage')">Collage Maker</button>
+        </div>
+
+        <!-- GALLERY TAB -->
+        <section id="tab-gallery" class="tab-section active">
+            <div class="card">
+                <h3>Your Photos</h3>
+
+                <div class="upload-box">
+                    <input type="file" id="photo-upload" accept="image/*" onchange="uploadPhoto(event)">
+                    <label for="photo-upload" class="upload-label">➕ Add Photo</label>
+                </div>
+
+                <div id="gallery-grid" class="gallery-grid">
+                    <!-- Photos inserted by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- PHOTOBOOTH TAB -->
+        <section id="tab-photobooth" class="tab-section">
+            <div class="card">
+                <h3>Photobooth</h3>
+
+                <div class="photobooth-area">
+                    <div class="preview-box">
+                        <img id="photobooth-preview" src="" alt="">
+                    </div>
+
+                    <div class="photobooth-controls">
+                        <input type="file" id="photobooth-input" accept="image/*" onchange="loadPhotoboothImage(event)">
+                        
+                        <h4>Filters</h4>
+                        <div class="filter-options">
+                            <button onclick="applyFilter('none')">None</button>
+                            <button onclick="applyFilter('softpink')">Soft Pink</button>
+                            <button onclick="applyFilter('dreamy')">Dreamy Glow</button>
+                            <button onclick="applyFilter('filmgrain')">Film Grain</button>
+                        </div>
+
+                        <h4>Stickers</h4>
+                        <div class="sticker-options">
+                            <button onclick="addSticker('heart')">💖</button>
+                            <button onclick="addSticker('sparkle')">✨</button>
+                            <button onclick="addSticker('star')">⭐</button>
+                            <button onclick="addSticker('bow')">🎀</button>
+                        </div>
+
+                        <h4>Notes</h4>
+                        <textarea id="photobooth-note" placeholder="Add a cute note..."></textarea>
+
+                        <button class="save-btn" onclick="savePhotobooth()">Save Photobooth Photo ✨</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- COLLAGE MAKER TAB -->
+        <section id="tab-collage" class="tab-section">
+            <div class="card">
+                <h3>Collage Maker</h3>
+
+                <div class="collage-area">
+                    <div id="collage-canvas" class="collage-canvas">
+                        <!-- Drag & drop items inserted by JS -->
+                    </div>
+
+                    <div class="collage-controls">
+                        <h4>Add to Collage</h4>
+                        <button onclick="addCollageItem('photo')">➕ Photo</button>
+                        <button onclick="addCollageItem('text')">➕ Text</button>
+                        <button onclick="addCollageItem('sticker')">➕ Sticker</button>
+
+                        <h4>Background</h4>
+                        <button onclick="setCollageBg('white')">White</button>
+                        <button onclick="setCollageBg('pink')">Pink</button>
+                        <button onclick="setCollageBg('clouds')">Clouds</button>
+                        <button onclick="setCollageBg('paper')">Paper</button>
+
+                        <button class="save-btn" onclick="saveCollage()">Save Collage ✨</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+
+    <!-- Auto Theme Loader -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const saved = localStorage.getItem("theme") || "light";
+            document.body.setAttribute("data-theme", saved);
+        });
+    </script>
+
+</body>
+</html>

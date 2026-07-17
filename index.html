@@ -1,3 +1,4 @@
+<!--Root index.html-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,10 +14,14 @@
 <!-- Top bar: brand + login/logout controls -->
 <header>
     <div class="logo">🌸 MimiTracker</div>
+
     <div class="auth-container">
         <button id="auth-btn" class="btn btn-primary" onclick="openAuthModal()">Choose Name</button>
         <span id="user-display" class="user-display hidden"></span>
         <button id="logout-btn" class="btn btn-ghost hidden" onclick="logout()">Logout</button>
+
+        <!-- 🌙 NEW THEME SWITCH BUTTON -->
+        <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()">🌙</button>
     </div>
 </header>
 
@@ -45,7 +50,7 @@
             <div id="home-reminders-content">Loading reminders...</div>
         </div>
 
-        <!-- Together Space entry: opens the code modal if not connected, otherwise jumps straight in -->
+        <!-- Together Space entry -->
         <div class="preview-card together-card" onclick="handleTogetherCardClick()" role="button" tabindex="0" aria-label="Open Together Space">
             <span id="together-status-badge" class="status-badge">Not Connected</span>
             <div class="preview-icon">💗</div>
@@ -104,7 +109,7 @@
 
 </main>
 
-<!-- Login / Register modal (2 steps: username, then password) -->
+<!-- Login / Register modal -->
 <div id="auth-modal" class="modal hidden">
     <div class="modal-content">
         <span class="close-btn" onclick="closeAuthModal()" role="button" tabindex="0" aria-label="Close">&times;</span>

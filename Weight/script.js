@@ -2,7 +2,8 @@
 const currentUser = localStorage.getItem("mimiTracker_session") || "guest";
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Default to local current date format YYYY-MM-DD
+    applySavedTheme();   // 🌙 Auto‑apply dark mode
+
     const today = new Date().toISOString().split('T')[0];
     document.getElementById("log-date").value = today;
 
@@ -10,6 +11,14 @@ document.addEventListener("DOMContentLoaded", () => {
     loadDailyWeights();
     renderHistory();
 });
+
+/* ============================================================
+   🌙 APPLY SAVED THEME (NO toggle button)
+   ============================================================ */
+function applySavedTheme(){
+    const saved = localStorage.getItem("theme") || "light";
+    document.body.setAttribute("data-theme", saved);
+}
 
 function loadTarget() {
     const targetData = JSON.parse(localStorage.getItem(`weight_target_${currentUser}`)) || { weight: "", reached: false };
@@ -61,7 +70,6 @@ function saveTimeWeight(timeOfDay) {
 
     if (!inputVal) return alert("Please type a weight first!");
 
-    // Generates format: (10:41 am) 47.50 kg
     const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }).toLowerCase();
     const formattedString = `(${timeString}) ${parseFloat(inputVal).toFixed(2)} kg`;
 
@@ -112,5 +120,5 @@ function renderHistory() {
 
 function formatDateLabel(dateString) {
     const parts = dateString.split("-");
-    return `${parts[1]}/${parts[2]}/${parts[0]}`; // MM/DD/YYYY
+    return `${parts[1]}/${parts[2]}/${parts[0]}`;
 }

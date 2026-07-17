@@ -1,4 +1,3 @@
-<!--Calendar index.html-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,10 +7,11 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
+
+<body data-theme="light">
 
     <header>
-        <a href="../index.html"" class="back-btn">🌸 Back Home</a>
+        <a href="../index.html" class="back-btn">🌸 Back Home</a>
         <div class="logo">📅 Calendar</div>
     </header>
 
@@ -35,8 +35,7 @@
                 </select>
             </div>
 
-            <div id="dynamic-fields-container">
-                </div>
+            <div id="dynamic-fields-container"></div>
 
             <button id="save-reminder-btn" onclick="saveReminder()">Add to Calendar ✨</button>
         </div>
@@ -49,17 +48,10 @@
             </div>
 
             <div class="weekdays-grid">
-                <div>Su</div>
-                <div>Mo</div>
-                <div>Tu</div>
-                <div>We</div>
-                <div>Th</div>
-                <div>Fr</div>
-                <div>Sa</div>
+                <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
             </div>
 
-            <div id="days-grid" class="days-grid">
-                </div>
+            <div id="days-grid" class="days-grid"></div>
 
             <div class="legend">
                 <div class="legend-item">
@@ -75,12 +67,20 @@
 
         <div class="card list-card">
             <h3 id="list-title">Reminders for this Month</h3>
-            <div id="reminders-list" class="reminders-list">
-                </div>
+            <div id="reminders-list" class="reminders-list"></div>
         </div>
 
     </main>
 
     <script src="script.js"></script>
+
+    <!-- 🌙 APPLY SAVED THEME ON LOAD (NO BUTTON) -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const saved = localStorage.getItem("theme") || "light";
+            document.body.setAttribute("data-theme", saved);
+        });
+    </script>
+
 </body>
 </html>

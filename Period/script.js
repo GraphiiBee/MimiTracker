@@ -3,12 +3,21 @@ const currentUser = localStorage.getItem("mimiTracker_session") || "guest";
 let localSelectedSymptoms = [];
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Set default values in date picker node to today's stamp coordinates
+    applySavedTheme();   // 🌙 Auto‑apply dark mode
+
     const todayStr = new Date().toISOString().split('T')[0];
     document.getElementById("period-start-date").value = todayStr;
     
     renderPeriodTrackerUI();
 });
+
+/* ============================================================
+   🌙 APPLY SAVED THEME (NO toggle button)
+   ============================================================ */
+function applySavedTheme(){
+    const saved = localStorage.getItem("theme") || "light";
+    document.body.setAttribute("data-theme", saved);
+}
 
 // Returns tracking date footprints format code strings (YYYY-MM-DD)
 function getTodayDateKey() {
@@ -37,7 +46,6 @@ function saveTodaySymptoms() {
     
     let symptomsLog = JSON.parse(localStorage.getItem(storageKey)) || {};
     
-    // Assign or overwrite selected array listings
     symptomsLog[todayKey] = [...localSelectedSymptoms];
     localStorage.setItem(storageKey, JSON.stringify(symptomsLog));
 
@@ -64,7 +72,7 @@ function savePeriodCycle() {
         duration: duration
     };
 
-    cycleHistory.unshift(newLog); // Push newest tracking configurations to the front
+    cycleHistory.unshift(newLog);
     localStorage.setItem(`period_history_${currentUser}`, JSON.stringify(cycleHistory));
 
     renderPeriodTrackerUI();
@@ -92,20 +100,17 @@ function renderPeriodTrackerUI() {
         return;
     }
 
-    // Process predictive calendar logic loops targeting the latest entry logged
     const latestLog = cycleHistory[0];
     const lastStart = new Date(latestLog.startDate + "T00:00:00"); 
     const today = new Date();
     today.setHours(0,0,0,0);
 
-    // Calculate prediction dates coordinates mapping layouts
     const nextPeriodDate = new Date(lastStart.getTime());
     nextPeriodDate.setDate(nextPeriodDate.getDate() + latestLog.cycleLength);
 
     const msDiff = nextPeriodDate.getTime() - today.getTime();
     const daysLeft = Math.ceil(msDiff / (1000 * 60 * 60 * 24));
 
-    // Update main status card visualization viewports
     if (daysLeft > 0) {
         document.getElementById("countdown-days").innerText = daysLeft;
         document.getElementById("prediction-text").innerText = `Next period expected in ${daysLeft} days`;
@@ -113,16 +118,14 @@ function renderPeriodTrackerUI() {
         document.getElementById("countdown-days").innerText = "0";
         document.getElementById("prediction-text").innerText = "Period predicted today! 🌸";
     } else {
-        // Late cycle track metrics handles balances gracefully
         document.getElementById("countdown-days").innerText = "!";
         document.getElementById("prediction-text").innerText = `Cycle is running ${Math.abs(daysLeft)} days late`;
     }
 
-    // Format human readable date markers strings
     const opt = { month: 'short', day: 'numeric', year: 'numeric' };
-    document.getElementById("cycle-day-text").innerText = `Last cycle logged: ${lastStart.toLocaleDateString('en-US', opt)} • Next cycle target: ${nextPeriodDate.toLocaleDateString('en-US', opt)}`;
+    document.getElementById("cycle-day-text").innerText =
+        `Last cycle logged: ${lastStart.toLocaleDateString('en-US', opt)} • Next cycle target: ${nextPeriodDate.toLocaleDateString('en-US', opt)}`;
 
-    // Populate historical tracker cards items rows
     cycleHistory.forEach(item => {
         const itemStart = new Date(item.startDate + "T00:00:00");
         const rowNode = document.createElement("div");

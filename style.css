@@ -1,7 +1,4 @@
-/* ============================================================
-   MimiTracker — Home Page Styles
-   Mobile-first layout, soft pink minimalist theme
-   ============================================================ */
+/*root style.css*/
 
 *{
     box-sizing:border-box;
@@ -226,10 +223,15 @@ header{
     color:var(--color-primary-strong);
 }
 
-/* ---------- Together card (clickable snapshot) ---------- */
+/* ---------- Together card ---------- */
 .together-card{
     cursor:pointer;
     background:linear-gradient(135deg,#FFFFFF 60%,#FFF3F6);
+}
+
+/* 🌙 FIXED: TogetherSpace button in dark mode */
+body[data-theme="dark"] .together-card{
+    background:linear-gradient(135deg,#2A2A35 60%,#3A2A3A);
 }
 
 .status-badge{
@@ -292,7 +294,7 @@ header{
     color:var(--color-text-faint);
 }
 
-/* ---------- Hover interactions, pointer devices only ---------- */
+/* ---------- Hover interactions ---------- */
 @media (hover:hover) and (pointer:fine){
     .together-card:hover{
         transform:translateY(-3px);
@@ -401,7 +403,7 @@ header{
     display:none!important;
 }
 
-/* ---------- Keyboard focus visibility ---------- */
+/* ---------- Keyboard focus ---------- */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
@@ -409,6 +411,85 @@ input:focus-visible,
 .close-btn:focus-visible{
     outline:2px solid var(--color-primary-strong);
     outline-offset:2px;
+}
+
+/* ============================================================
+   🌙 THEME TOGGLE BUTTON (HEADER)
+   ============================================================ */
+.theme-toggle{
+    background:var(--color-border);
+    border:none;
+    border-radius:var(--radius-full);
+    padding:.55rem .9rem;
+    font-size:1.1rem;
+    cursor:pointer;
+    transition:background var(--transition), transform var(--transition), opacity var(--transition);
+}
+
+.theme-toggle:hover{
+    background:#EADCE0;
+}
+
+.theme-toggle.theme-animate{
+    transform:scale(1.15) rotate(10deg);
+    opacity:0.85;
+}
+
+/* ============================================================
+   🌙 FLOATING MOBILE THEME TOGGLE
+   ============================================================ */
+.floating-theme-toggle{
+    position:fixed;
+    bottom:1.2rem;
+    right:1.2rem;
+    background:var(--color-surface);
+    border:2px solid var(--color-border);
+    border-radius:var(--radius-full);
+    padding:.75rem 1rem;
+    font-size:1.3rem;
+    box-shadow:var(--shadow-md);
+    cursor:pointer;
+    z-index:999;
+    transition:transform var(--transition), background var(--transition), opacity var(--transition);
+}
+
+.floating-theme-toggle:hover{
+    transform:scale(1.1);
+}
+
+.floating-theme-toggle.theme-animate{
+    transform:scale(1.2) rotate(8deg);
+    opacity:0.9;
+}
+
+/* Show floating toggle only on mobile */
+@media (max-width:700px){
+    .floating-theme-toggle{
+        display:block;
+    }
+    .theme-toggle{
+        display:none;
+    }
+}
+
+/* ============================================================
+   🌙 DARK MODE OVERRIDES
+   ============================================================ */
+body[data-theme="dark"]{
+    --color-bg:#1E1E22;
+    --color-surface:#2A2A35;
+    --color-primary:#FFB7C8;
+    --color-primary-strong:#FF9AB0;
+    --color-primary-strong-hover:#FF8AA3;
+    --color-primary-soft:#3A2A3A;
+    --color-accent:#FFB7A2;
+    --color-accent-soft:#3A2A2A;
+    --color-connected:#9AD7A8;
+    --color-connected-soft:#2F3F33;
+    --color-text:#EDEDED;
+    --color-text-soft:#CFCFCF;
+    --color-text-faint:#A8A8A8;
+    --color-border:#3A3A3A;
 }
 
 /* ============================================================

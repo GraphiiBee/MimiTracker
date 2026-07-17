@@ -1,7 +1,4 @@
-/* ============================================================
-   MimiTracker — Home Page Script
-   Handles login/register, session state, and Home snapshots
-   ============================================================ */
+/*root script.js*/
 
 let tempUsername = "";
 let isExistingUser = false;
@@ -10,6 +7,12 @@ let generatedPartnerCode = "";
 document.addEventListener("DOMContentLoaded", () => {
     checkSession();
     initAccessibility();
+
+    /* 🌙 APPLY SAVED THEME ON LOAD */
+    applySavedTheme();
+
+    /* 📱 CREATE FLOATING MOBILE TOGGLE */
+    createFloatingThemeToggle();
 });
 
 /* ---------- Auth modal open / close / reset ---------- */
@@ -31,7 +34,7 @@ function resetAuthModal(){
     tempUsername = "";
 }
 
-/* ---------- Step 1: username (checks if account already exists) ---------- */
+/* ---------- Step 1: username ---------- */
 
 function handleUsernameSubmit(){
     const usernameInput = document.getElementById("username-input").value.trim();
@@ -58,7 +61,7 @@ function handleUsernameSubmit(){
     }
 }
 
-/* ---------- Step 2: password (logs in or registers, same rule as before) ---------- */
+/* ---------- Step 2: password ---------- */
 
 function handlePasswordSubmit(){
     const password = document.getElementById("password-input").value.trim();
@@ -94,7 +97,7 @@ function logout(){
     checkSession();
 }
 
-/* ---------- Session state: toggles header/UI and loads snapshots ---------- */
+/* ---------- Session state ---------- */
 
 function checkSession(){
     const activeUser = localStorage.getItem("mimiTracker_session");
@@ -126,7 +129,7 @@ function checkSession(){
     }
 }
 
-/* ---------- Together Space modal controls ---------- */
+/* ---------- Together Space modal ---------- */
 
 function openTogetherModal(){
     document.getElementById("together-modal").classList.remove("hidden");
@@ -136,7 +139,6 @@ function closeTogetherModal(){
     document.getElementById("together-modal").classList.add("hidden");
 }
 
-// Card click: already connected -> go straight in, otherwise open the code modal
 function handleTogetherCardClick(){
     const activeUser = localStorage.getItem("mimiTracker_session");
     if(!activeUser) return;
@@ -176,7 +178,7 @@ function connectPartner(){
     window.location.href = "TogetherSpace/index.html";
 }
 
-/* ---------- Snapshot: Together Space status text + badge ---------- */
+/* ---------- Together preview ---------- */
 
 function renderTogetherPreview(user){
     const statusText = document.getElementById("together-space-status");
@@ -200,7 +202,7 @@ function renderTogetherPreview(user){
     }
 }
 
-/* ---------- Snapshot: cycle countdown ---------- */
+/* ---------- Cycle preview ---------- */
 
 function renderPeriodPreview(user){
     const output = document.getElementById("home-period-content");
@@ -231,7 +233,7 @@ function renderPeriodPreview(user){
     }
 }
 
-/* ---------- Snapshot: next 3 upcoming reminders ---------- */
+/* ---------- Reminders preview ---------- */
 
 function renderRemindersPreview(user){
     const box = document.getElementById("home-reminders-content");
@@ -278,7 +280,7 @@ function renderRemindersPreview(user){
     });
 }
 
-/* ---------- Keyboard accessibility for clickable, non-native elements ---------- */
+/* ---------- Accessibility ---------- */
 
 function initAccessibility(){
     const togetherCard = document.querySelector(".together-card");
@@ -299,4 +301,57 @@ function initAccessibility(){
             }
         });
     });
+}
+
+/* ============================================================
+   🌙 LIGHT / DARK MODE SYSTEM
+   ============================================================ */
+
+/* Apply saved theme on load */
+function applySavedTheme(){
+    const saved = localStorage.getItem("theme") || "light";
+    document.body.setAttribute("data-theme", saved);
+
+    const headerToggle = document.getElementById("theme-toggle");
+    if(headerToggle){
+        headerToggle.textContent = saved === "dark" ? "🌞" : "🌙";
+    }
+
+    const floatingToggle = document.querySelector(".floating-theme-toggle");
+    if(floatingToggle){
+        floatingToggle.textContent = saved === "dark" ? "🌞" : "🌙";
+    }
+}
+
+/* Toggle theme */
+function toggleTheme(){
+    const current = document.body.getAttribute("data-theme");
+    const newTheme = current === "dark" ? "light" : "dark";
+
+    document.body.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+
+    const headerToggle = document.getElementById("theme-toggle");
+    if(headerToggle){
+        headerToggle.textContent = newTheme === "dark" ? "🌞" : "🌙";
+        headerToggle.classList.add("theme-animate");
+        setTimeout(() => headerToggle.classList.remove("theme-animate"), 300);
+    }
+
+    const floatingToggle = document.querySelector(".floating-theme-toggle");
+    if(floatingToggle){
+        floatingToggle.textContent = newTheme === "dark" ? "🌞" : "🌙";
+        floatingToggle.classList.add("theme-animate");
+        setTimeout(() => floatingToggle.classList.remove("theme-animate"), 300);
+    }
+}
+
+/* Create floating mobile toggle */
+function createFloatingThemeToggle(){
+    const btn = document.createElement("button");
+    btn.className = "floating-theme-toggle";
+    btn.textContent = document.body.getAttribute("data-theme") === "dark" ? "🌞" : "🌙";
+    btn.onclick = toggleTheme;
+
+    document.body.appendChild(btn);
 }

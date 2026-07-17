@@ -12,6 +12,7 @@ body {
     color: #4A4A4A;
     min-height: 100vh;
     padding-bottom: 3rem;
+    transition: background-color .25s ease, color .25s ease;
 }
 
 header {
@@ -20,6 +21,7 @@ header {
     display: flex;
     align-items: center;
     box-shadow: 0 4px 15px rgba(255, 182, 193, 0.15);
+    transition: background-color .25s ease, box-shadow .25s ease;
 }
 
 .back-btn {
@@ -52,6 +54,7 @@ header {
     padding: 2rem;
     border-radius: 24px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02);
+    transition: background-color .25s ease, box-shadow .25s ease;
 }
 
 .card h3 {
@@ -87,7 +90,7 @@ header {
     color: #666;
 }
 
-/* Minimalist Unit Selection Toggles */
+/* Unit Selection Toggles */
 .toggle-group {
     display: flex;
     background-color: #F0F0F0;
@@ -123,7 +126,7 @@ input[type="number"] {
     outline: none;
     font-size: 1rem;
     color: #4A4A4A;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, background-color .25s ease, color .25s ease;
 }
 
 input:focus {
@@ -148,11 +151,12 @@ input:focus {
     background-color: #FF9AA2;
 }
 
-/* Result Visualization UI */
+/* Result Card */
 .result-card {
     text-align: center;
     border: 2px solid #FFDAC1;
     animation: fadeIn 0.4s ease-out;
+    transition: background-color .25s ease, border-color .25s ease;
 }
 
 .bmi-score-box {
@@ -163,13 +167,13 @@ input:focus {
     display: inline-block;
     min-width: 150px;
     border: 1px solid #FFEBEB;
+    transition: background-color .25s ease, border-color .25s ease;
 }
 
 #bmi-number {
     font-size: 2.4rem;
     font-weight: 700;
     color: #FF9AA2;
-    display: block;
 }
 
 #bmi-status {
@@ -193,6 +197,7 @@ input:focus {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* Mobile */
 @media (max-width: 680px) {
     header {
         padding: 1rem;
@@ -211,4 +216,89 @@ input:focus {
     .card {
         padding: 1.5rem;
     }
+}
+
+/* ==========================================================
+   🌙 DARK MODE OVERRIDES (NO toggle button)
+   ========================================================== */
+
+body[data-theme="dark"] {
+    background-color: #1E1E22;
+    color: #EDEDED;
+}
+
+/* Header */
+body[data-theme="dark"] header {
+    background-color: #2A2A35;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+}
+
+body[data-theme="dark"] .back-btn {
+    color: #FFB7C8;
+}
+
+body[data-theme="dark"] .logo {
+    color: #FFB7C8;
+}
+
+/* Cards */
+body[data-theme="dark"] .card {
+    background-color: #2A2A35;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+}
+
+body[data-theme="dark"] .card h3 {
+    color: #FFB7C8;
+}
+
+/* Inputs */
+body[data-theme="dark"] input[type="number"] {
+    background-color: #262630;
+    border-color: #444;
+    color: #EDEDED;
+}
+
+body[data-theme="dark"] input[type="number"]:focus {
+    border-color: #FF9AB0;
+}
+
+/* Toggles */
+body[data-theme="dark"] .toggle-group {
+    background-color: #3A3A3A;
+}
+
+body[data-theme="dark"] .toggle-btn {
+    color: #CFCFCF;
+}
+
+body[data-theme="dark"] .toggle-btn.active {
+    background-color: #FF9AB0;
+    color: white;
+}
+
+/* Buttons */
+body[data-theme="dark"] #calc-btn {
+    background-color: #FF9AB0;
+}
+
+body[data-theme="dark"] #calc-btn:hover {
+    background-color: #FF8AA3;
+}
+
+/* Result Card */
+body[data-theme="dark"] .result-card {
+    border-color: #3A3A3A;
+}
+
+body[data-theme="dark"] .bmi-score-box {
+    background-color: #2F2F38;
+    border-color: #3A3A3A;
+}
+
+body[data-theme="dark"] #bmi-number {
+    color: #FFB7C8;
+}
+
+body[data-theme="dark"] #bmi-feedback {
+    color: #CFCFCF;
 }

@@ -14,22 +14,34 @@ const monthNames = [
 let countdownInterval = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-    handleTypeChange(); // Initialize default form input states
+    handleTypeChange(); 
     renderCalendar();
-    renderRemindersList(); // Handled in Part 2
+    renderRemindersList();
     
-    // Start global ticking system for countdown cards
-    countdownInterval = setInterval(updateLiveCountdowns, 1000); // Handled in Part 2
+    countdownInterval = setInterval(updateLiveCountdowns, 1000);
+
+    /* 🌙 APPLY SAVED THEME ON LOAD (NO BUTTON) */
+    applySavedTheme();
 });
 
-// Swaps form input configurations based on selection parameters instantly
+/* ============================================================
+   🌙 APPLY SAVED THEME (NO toggle button)
+   ============================================================ */
+function applySavedTheme(){
+    const saved = localStorage.getItem("theme") || "light";
+    document.body.setAttribute("data-theme", saved);
+}
+
+/* ============================================================
+   REMINDER SYSTEM (unchanged)
+   ============================================================ */
+
 function handleTypeChange() {
     const type = document.getElementById("reminder-type").value;
     const container = document.getElementById("dynamic-fields-container");
-    container.innerHTML = ""; // Clear active fields
+    container.innerHTML = "";
 
     if (type === "birthday" || type === "anniversary") {
-        // Only Day & Month are required for recurring yearly events
         container.innerHTML = `
             <div class="input-row">
                 <div class="input-group">
@@ -45,7 +57,6 @@ function handleTypeChange() {
             </div>
         `;
     } else if (type === "event") {
-        // Month, Day, Year + Specific Start Time configuration
         container.innerHTML = `
             <div class="input-row">
                 <div class="input-group">
@@ -69,7 +80,6 @@ function handleTypeChange() {
             </div>
         `;
     } else if (type === "countdown") {
-        // Month, Day, and Year required for full countdown precision
         container.innerHTML = `
             <div class="input-row">
                 <div class="input-group">
@@ -91,7 +101,6 @@ function handleTypeChange() {
     }
 }
 
-// Generates the calendar month grid layout and applies interactive state indicators
 function renderCalendar() {
     const grid = document.getElementById("days-grid");
     const label = document.getElementById("month-year-label");
@@ -104,14 +113,12 @@ function renderCalendar() {
 
     const reminders = JSON.parse(localStorage.getItem(`reminders_${currentUser}`)) || [];
 
-    // Fill leading empty spacer cells for layout alignment
     for (let i = 0; i < firstDayIndex; i++) {
         const emptyCell = document.createElement("div");
         emptyCell.className = "day-cell empty";
         grid.appendChild(emptyCell);
     }
 
-    // Populate the actual operational numeric month dates
     for (let day = 1; day <= totalDaysInMonth; day++) {
         const cell = document.createElement("div");
         cell.className = "day-cell";
@@ -122,7 +129,6 @@ function renderCalendar() {
             cell.classList.add("today");
         }
 
-        // Match reminder entries corresponding to this calendar date coordinates
         const targetMonth = displayedMonth + 1;
         const hasMatch = reminders.some(rem => {
             if (rem.type === "birthday" || rem.type === "anniversary") {
@@ -141,7 +147,7 @@ function renderCalendar() {
         grid.appendChild(cell);
     }
 }
-// Navigates between months and refreshes both grids and active lists
+
 function changeMonth(direction) {
     displayedMonth += direction;
     if (displayedMonth < 0) {
@@ -155,7 +161,6 @@ function changeMonth(direction) {
     renderRemindersList();
 }
 
-// Validates fields, creates the correct data structure, and saves to localStorage
 function saveReminder() {
     const title = document.getElementById("reminder-title").value.trim();
     const type = document.getElementById("reminder-type").value;
@@ -171,7 +176,6 @@ function saveReminder() {
     let year = null;
     let time = null;
 
-    // Enforce year validation only on specific standard single-event tracks
     if (type === "event" || type === "countdown") {
         year = parseInt(document.getElementById("field-year").value);
         if (!year) {
@@ -198,14 +202,12 @@ function saveReminder() {
     reminders.push(newReminder);
     localStorage.setItem(`reminders_${currentUser}`, JSON.stringify(reminders));
 
-    // Reset the title text input area for clean future tracking entries
     document.getElementById("reminder-title").value = "";
     
     renderCalendar();
     renderRemindersList();
 }
 
-// Drops a tracking item from storage via its unique ID footprint 
 function deleteReminder(id) {
     let reminders = JSON.parse(localStorage.getItem(`reminders_${currentUser}`)) || [];
     reminders = reminders.filter(item => item.id !== id);
@@ -214,7 +216,6 @@ function deleteReminder(id) {
     renderRemindersList();
 }
 
-// Grabs data logs and lists reminders ONLY for the active current month viewport
 function renderRemindersList() {
     const listContainer = document.getElementById("reminders-list");
     listContainer.innerHTML = "";
@@ -224,13 +225,10 @@ function renderRemindersList() {
     const reminders = JSON.parse(localStorage.getItem(`reminders_${currentUser}`)) || [];
     const targetMonth = displayedMonth + 1;
 
-    // Filters down data records based strictly on target month logic rules
     const monthlyReminders = reminders.filter(rem => {
         if (rem.type === "birthday" || rem.type === "anniversary") {
-            // Recurrent tracking structures ignore matching explicit years
             return parseInt(rem.month) === targetMonth;
         } else {
-            // Events and countdown clocks look closely at both month and year alignment
             return parseInt(rem.month) === targetMonth && parseInt(rem.year) === displayedYear;
         }
     });
@@ -240,7 +238,6 @@ function renderRemindersList() {
         return;
     }
 
-    // Sort chronologically by day layout coordinate positions
     monthlyReminders.sort((a, b) => a.day - b.day);
 
     monthlyReminders.forEach(rem => {
@@ -256,7 +253,6 @@ function renderRemindersList() {
             metaDetails = `Date: ${monthNames[rem.month - 1]} ${rem.day}, ${rem.year} — Starts at: ⏰ ${rem.time}`;
         } else if (rem.type === "countdown") {
             metaDetails = `Target Date: ${monthNames[rem.month - 1]} ${rem.day}, ${rem.year}`;
-            // Inject element tags with dataset attributes to let the dynamic clock match coordinates
             countdownPlaceholder = `<div class="live-countdown" data-target-year="${rem.year}" data-target-month="${rem.month}" data-target-day="${rem.day}">Calculating clock...</div>`;
         }
 
@@ -273,7 +269,7 @@ function renderRemindersList() {
         listContainer.appendChild(item);
     });
 
-    updateLiveCountdowns(); // Immediate parsing sweep mapping calculation layout
+    updateLiveCountdowns();
 }
 
 function updateLiveCountdowns() {
@@ -283,7 +279,6 @@ function updateLiveCountdowns() {
         const m = parseInt(clock.getAttribute("data-target-month")) - 1;
         const d = parseInt(clock.getAttribute("data-target-day"));
 
-        // Setup absolute timestamp target coordinate matching midnight start boundary
         const targetTime = new Date(y, m, d, 0, 0, 0).getTime();
         const now = new Date().getTime();
         const distance = targetTime - now;
@@ -295,13 +290,11 @@ function updateLiveCountdowns() {
             return;
         }
 
-        // Standard time translation math configurations mapping layouts
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        // Render the live ticking string visually inside the container
         clock.innerText = `⏳ ${days}d ${hours}h ${minutes}m ${seconds}s`;
     });
 }

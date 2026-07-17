@@ -1,0 +1,104 @@
+<!-- TogetherSpace/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#FFF8F9">
+    <title>MimiTracker - Together Space</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+    <a href="../index.html" class="back-btn">🌸 Back Home</a>
+    <div class="logo">💗 Together Space</div>
+    <div class="connection-manager">
+        <div class="code-badge">Code: <span id="display-partner-code">------</span></div>
+        <button class="btn-disconnect" onclick="confirmDisconnect()" aria-label="Disconnect Partner">Disconnect</button>
+    </div>
+</header>
+
+<main class="dashboard">
+    
+    <!-- Top Interactive row: Jar & Couple Goals Side-by-Side -->
+    <div class="together-row">
+        
+        <!-- Feature 1: I Miss You Jar Section -->
+        <section class="card jar-section">
+            <div class="card-header">
+                <h3>"I Miss You" Jar 🍯</h3>
+                <p>Spam the button to send hearts! Resets daily.</p>
+            </div>
+            
+            <div class="jar-container" id="jar-container">
+                <div class="jar-lid"></div>
+                <div class="jar-body">
+                    <!-- Liquid/Hearts overlay that fills up to 99 visually -->
+                    <div class="jar-fill" id="jar-fill"></div>
+                    <span class="jar-counter" id="jar-counter">0</span>
+                </div>
+            </div>
+
+            <button class="btn-heart-spam" onclick="spamHeart()">💗 Send Love</button>
+        </section>
+
+        <!-- Feature 2: Couple Goals Section -->
+        <section class="card goals-section">
+            <div class="card-header">
+                <h3>Couple Goals 🏆</h3>
+                <p>Shared checkboxes you can complete together.</p>
+            </div>
+
+            <div class="goal-input-container">
+                <input type="text" id="new-goal-input" placeholder="Add a new goal together..." maxlength="60">
+                <button onclick="addCoupleGoal()">Add</button>
+            </div>
+
+            <ul class="goals-list" id="goals-list">
+                <!-- Injected items -->
+            </ul>
+        </section>
+
+    </div>
+
+    <!-- Feature 3: Shared Sticky Notes Section (Full Width Bottom row) -->
+    <section class="card sticky-section">
+        <div class="sticky-section-header">
+            <div>
+                <h3>Shared Sticky Board 📌</h3>
+                <p>Leave short love notes for each other. Max 5 notes.</p>
+            </div>
+            <span class="sticky-counter" id="sticky-count-badge">0 / 5</span>
+        </div>
+
+        <!-- Sticky Note Creator (Hidden when 5 notes exist) -->
+        <div class="sticky-creator" id="sticky-creator-box">
+            <div class="textarea-wrapper">
+                <textarea id="new-sticky-input" placeholder="Type a sweet message..." maxlength="100" oninput="updateCharCount()"></textarea>
+                <span class="char-counter" id="char-counter-display">0/100</span>
+            </div>
+            
+            <div class="sticky-creator-footer">
+                <div class="sticky-color-picker">
+                    <button class="color-dot active" style="background: #FFF0F2;" data-color="#FFF0F2"></button>
+                    <button class="color-dot" style="background: #FFF9E6;" data-color="#FFF9E6"></button>
+                    <button class="color-dot" style="background: #EAF9EE;" data-color="#EAF9EE"></button>
+                    <button class="color-dot" style="background: #EBF7FF;" data-color="#EBF7FF"></button>
+                </div>
+                <button class="btn-save-sticky" onclick="addStickyNote()">Pin Note</button>
+            </div>
+        </div>
+
+        <!-- Dynamic Responsive Grid for Sticky Notes -->
+        <div class="sticky-grid" id="sticky-grid">
+            <!-- Notes injected here -->
+        </div>
+    </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
