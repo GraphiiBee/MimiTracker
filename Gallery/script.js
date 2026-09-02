@@ -9,6 +9,7 @@ let galleryTheme = "minimal"; // minimal | kawaii | film | couple
 
 let photoboothImage = null;
 let photoboothFilter = "none";
+let photoboothFrame = "none";
 let photoboothStickers = [];
 let collageItems = [];
 
@@ -81,9 +82,18 @@ function loadGallery() {
         const div = document.createElement("div");
         div.className = "gallery-item";
 
+        const filterClass = photo.filter && photo.filter !== 'none' ? `filter-${photo.filter}` : '';
+        const frameClass = photo.frame ? `frame-${photo.frame}` : 'frame-none';
+        const dateStr = photo.date || new Date().toLocaleDateString();
+
         div.innerHTML = `
-            <img src="${photo.url}" class="gallery-photo">
-            <div class="photo-note">${photo.note || ""}</div>
+            <div class="gallery-frame ${frameClass}">
+                <img src="${photo.url}" class="gallery-photo ${filterClass}">
+            </div>
+            <div class="photo-details">
+                <span class="photo-date">${dateStr}</span>
+                <div class="photo-note">${photo.note || ""}</div>
+            </div>
             <button class="delete-btn" onclick="deletePhoto(${index})">×</button>
         `;
 
@@ -98,7 +108,13 @@ function uploadPhoto(event) {
     const reader = new FileReader();
     reader.onload = () => {
         const photos = JSON.parse(localStorage.getItem(`gallery_${currentUser}`)) || [];
-        photos.push({ url: reader.result, note: "" });
+        photos.push({ 
+            url: reader.result, 
+            note: "", 
+            filter: "none", 
+            frame: "none",
+            date: new Date().toLocaleDateString()
+        });
         localStorage.setItem(`gallery_${currentUser}`, JSON.stringify(photos));
         loadGallery();
     };
@@ -125,9 +141,18 @@ function loadSharedGallery() {
         const div = document.createElement("div");
         div.className = "gallery-item shared";
 
+        const filterClass = photo.filter && photo.filter !== 'none' ? `filter-${photo.filter}` : '';
+        const frameClass = photo.frame ? `frame-${photo.frame}` : 'frame-none';
+        const dateStr = photo.date || new Date().toLocaleDateString();
+
         div.innerHTML = `
-            <img src="${photo.url}" class="gallery-photo">
-            <div class="photo-note">${photo.note || ""}</div>
+            <div class="gallery-frame ${frameClass}">
+                <img src="${photo.url}" class="gallery-photo ${filterClass}">
+            </div>
+            <div class="photo-details">
+                <span class="photo-date">${dateStr}</span>
+                <div class="photo-note">${photo.note || ""}</div>
+            </div>
             <div class="shared-tag">Shared</div>
         `;
 
@@ -153,9 +178,18 @@ function loadPhotoboothImage(event) {
 function applyFilter(filter) {
     photoboothFilter = filter;
     const preview = document.getElementById("photobooth-preview");
-
+    
+    // Clear old filter class, apply new
     preview.className = "";
-    preview.classList.add(`filter-${filter}`);
+    if (filter !== "none") {
+        preview.classList.add(`filter-${filter}`);
+    }
+}
+
+function applyFrame(frame) {
+    photoboothFrame = frame;
+    const frameContainer = document.getElementById("photobooth-frame");
+    frameContainer.className = `frame-${frame}`;
 }
 
 function addSticker(type) {
@@ -172,16 +206,23 @@ function savePhotobooth() {
     const note = document.getElementById("photobooth-note").value;
 
     const photos = JSON.parse(localStorage.getItem(`gallery_${currentUser}`)) || [];
+    
+    // We now save the filter, frame, and current date
     photos.push({
         url: photoboothImage,
         note: note,
         filter: photoboothFilter,
-        stickers: photoboothStickers
+        frame: photoboothFrame,
+        stickers: photoboothStickers,
+        date: new Date().toLocaleDateString()
     });
 
     localStorage.setItem(`gallery_${currentUser}`, JSON.stringify(photos));
 
     alert("Photobooth photo saved! ✨");
+    
+    // Switch to gallery view to see the new photo
+    switchTab('gallery');
     loadGallery();
 }
 
@@ -250,7 +291,3 @@ function setCollageBg(bg) {
 function saveCollage() {
     alert("Collage saved! (Export feature coming soon ✨)");
 }
-
-/* ============================================================
-   END
-   ============================================================ */
