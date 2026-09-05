@@ -535,3 +535,97 @@ body[data-theme="dark"]{
         gap:var(--space-5);
     }
 }
+/* ============================================================
+   🎉 BIRTHDAY POPUP + BALLOONS
+   ============================================================ */
+
+.birthday-modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:1rem;
+    z-index:2000;
+}
+
+.birthday-content{
+    position:relative;
+    background:var(--color-surface);
+    padding:2rem;
+    max-width:480px;
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-lg);
+    text-align:center;
+    animation:birthday-in .4s ease;
+}
+
+@keyframes birthday-in{
+    from{opacity:0; transform:scale(.85);}
+    to{opacity:1; transform:scale(1);}
+}
+
+.birthday-title{
+    font-size:1.4rem;
+    color:var(--color-primary-strong);
+    margin-bottom:1rem;
+}
+
+.birthday-message{
+    font-size:.9rem;
+    color:var(--color-text-soft);
+    line-height:1.6;
+    margin-bottom:1.5rem;
+}
+
+.birthday-close{
+    position:absolute;
+    top:1rem;
+    right:1rem;
+    font-size:1.8rem;
+    cursor:pointer;
+    color:var(--color-text-faint);
+}
+
+/* 🎈 Balloons */
+.birthday-balloons{
+    position:relative;
+    height:120px;
+}
+
+.balloon{
+    width:40px;
+    height:55px;
+    border-radius:50% 50% 45% 45%;
+    position:absolute;
+    bottom:0;
+    animation:float 4s ease-in-out infinite;
+}
+
+.balloon::after{
+    content:"";
+    position:absolute;
+    bottom:-20px;
+    left:50%;
+    width:2px;
+    height:20px;
+    background:#aaa;
+    transform:translateX(-50%);
+}
+
+.balloon.pink{ background:#F6A8BC; left:20%; animation-delay:0s; }
+.balloon.peach{ background:#FFD6C6; left:45%; animation-delay:.8s; }
+.balloon.rose{ background:#F28CA5; left:65%; animation-delay:1.4s; }
+.balloon.gold{ background:#FFB7A2; left:80%; animation-delay:2s; }
+
+@keyframes float{
+    0%{ transform:translateY(0); }
+    50%{ transform:translateY(-25px); }
+    100%{ transform:translateY(0); }
+}
+
+/* Dark mode adjustments */
+body[data-theme="dark"] .birthday-content{
+    background:#2A2A35;
+}

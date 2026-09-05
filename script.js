@@ -355,3 +355,50 @@ function createFloatingThemeToggle(){
 
     document.body.appendChild(btn);
 }
+/* ============================================================
+   🎉 BIRTHDAY POPUP LOGIC
+   ============================================================ */
+
+function showBirthdayPopup(){
+    const popup = document.getElementById("birthday-popup");
+    popup.classList.remove("hidden");
+}
+
+function closeBirthdayPopup(){
+    const popup = document.getElementById("birthday-popup");
+    popup.classList.add("hidden");
+}
+
+/* Auto-show when user logs in */
+function checkSession(){
+    const activeUser = localStorage.getItem("mimiTracker_session");
+    const authBtn = document.getElementById("auth-btn");
+    const userDisplay = document.getElementById("user-display");
+    const logoutBtn = document.getElementById("logout-btn");
+    const welcomeText = document.getElementById("welcome-text");
+    const previews = document.getElementById("home-previews");
+
+    if(activeUser){
+        authBtn.classList.add("hidden");
+        userDisplay.classList.remove("hidden");
+        logoutBtn.classList.remove("hidden");
+        previews.classList.remove("hidden");
+
+        const displayName = activeUser.charAt(0).toUpperCase() + activeUser.slice(1);
+        userDisplay.innerText = `🌸 Hello, ${displayName}`;
+        welcomeText.innerText = `Welcome back, ${displayName} ✨`;
+
+        renderPeriodPreview(activeUser);
+        renderRemindersPreview(activeUser);
+        renderTogetherPreview(activeUser);
+
+        /* 🎉 SHOW BIRTHDAY SURPRISE */
+        setTimeout(showBirthdayPopup, 800);
+    }else{
+        authBtn.classList.remove("hidden");
+        userDisplay.classList.add("hidden");
+        logoutBtn.classList.add("hidden");
+        previews.classList.add("hidden");
+        welcomeText.innerText = "Welcome to MimiTracker ✨";
+    }
+}
