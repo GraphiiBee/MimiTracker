@@ -629,3 +629,27 @@ body[data-theme="dark"]{
 body[data-theme="dark"] .birthday-content{
     background:#2A2A35;
 }
+/* 🎀 Mobile-friendly birthday popup */
+@media (max-width: 600px){
+    .birthday-content{
+        max-width: 90%;
+        padding: 1.4rem;
+    }
+
+    .birthday-title{
+        font-size: 1.2rem;
+    }
+
+    .birthday-message{
+        font-size: .85rem;
+    }
+
+    .birthday-balloons{
+        height: 100px;
+    }
+
+    .balloon{
+        width: 32px;
+        height: 45px;
+    }
+}
